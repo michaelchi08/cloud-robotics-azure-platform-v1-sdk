@@ -270,6 +270,11 @@ namespace CloudRoboticsFX.Worker
             Assembly assembly = null;
 
             // Load DLL from BLOB
+            string baseDirectory = string.Empty;
+            string privateDllDirectory = string.Empty;
+            string cachedFileName = string.Empty;
+            string cachedFileNameWithoutExt = string.Empty;
+
             if (rbapprc.DevMode == "True")
             {
                 string devdir = rbapprc.DevLocalDir;
@@ -282,10 +287,19 @@ namespace CloudRoboticsFX.Worker
                 {
                     dllFilePath = rbapprc.DevLocalDir + @"\" + rbapprc.FileName;
                 }
+
+                baseDirectory = Path.GetDirectoryName(dllFilePath);
+                privateDllDirectory = baseDirectory;
+                cachedFileName = Path.GetFileName(dllFilePath);
+                cachedFileNameWithoutExt = Path.GetFileNameWithoutExtension(dllFilePath);
             }
             else
             {
-                dllFilePath = CopyBlobToLocalDir(rbappmc, rbapprc, partitionId);
+                CachedDllFileInfo cachedDllFileInfo = CopyBlobToLocalDir(rbappmc, rbapprc, partitionId);
+                baseDirectory = cachedDllFileInfo.BaseDirectory;
+                privateDllDirectory = cachedDllFileInfo.PrivateDllDirectory;
+                cachedFileName = Path.GetFileName(cachedDllFileInfo.PrivateDllFilePath);
+                cachedFileNameWithoutExt = Path.GetFileNameWithoutExtension(cachedDllFileInfo.PrivateDllFilePath);
             }
 
             ////Static load without AppDomain
@@ -296,9 +310,6 @@ namespace CloudRoboticsFX.Worker
             try
             {
                 string appDomainName = appDomanNameBase + partitionId; 
-                string cachedDirectory = Path.GetDirectoryName(dllFilePath);
-                string cachedFileName = Path.GetFileName(dllFilePath);
-                string cachedFileNameWithoutExt = Path.GetFileNameWithoutExtension(dllFilePath);
                 AppDomain appDomain = null;
                 if (appDomainList.ContainsKey(partitionId))
                 {
@@ -307,7 +318,7 @@ namespace CloudRoboticsFX.Worker
 
                 if (appDomain == null)
                 {
-                    appDomain = CreateAppDomain(appDomainName, cachedDirectory);
+                    appDomain = CreateAppDomain(appDomainName, baseDirectory, privateDllDirectory);
                     lock (thisLock2)
                     {
                         appDomainList[partitionId] = appDomain;
@@ -404,31 +415,56 @@ namespace CloudRoboticsFX.Worker
             return rbapprc;
         }
 
-        string CopyBlobToLocalDir(RbAppMasterCache rbappmc, RbAppRouterCache rbapprc, string partitionId)
+        CachedDllFileInfo CopyBlobToLocalDir(RbAppMasterCache rbappmc, RbAppRouterCache rbapprc, string partitionId)
         {
             //string curdir = Environment.CurrentDirectory;
+            CachedDllFileInfo cachedDllFileInfo = new CachedDllFileInfo();
             string curdir = AppDomain.CurrentDomain.BaseDirectory;
-            string curFilePath = string.Empty;
-            RbAppDllCacheInfo rbAppDllInfo = null;
-            bool load_action = true;
+            cachedDllFileInfo.BaseDirectory = curdir;
+            cachedDllFileInfo.PrivateDllDirectory = Path.Combine(curdir, "P" + partitionId);
 
+            string blobTargetFilePath = string.Empty;
+            RbAppDllCacheInfo rbAppDllInfo = null;
+            RbAppDllCacheInfo rbAppDllInfo_partition = null;
+            bool loadAction = true;
+            bool blobCopyAction = true;
+            string partitionedFileNameKey = "P" + partitionId + "_" + rbapprc.FileName;
+
+            // Check original DLL info
             if (rbAppDllCacheInfoDic.ContainsKey(rbapprc.FileName))
             {
+                // Original DLL
                 rbAppDllInfo = (RbAppDllCacheInfo)rbAppDllCacheInfoDic[rbapprc.FileName];
-                curFilePath = rbAppDllInfo.CacheDir + @"\" + rbAppDllInfo.CachedFileName;
+                blobTargetFilePath = Path.Combine(rbAppDllInfo.CacheDir, rbAppDllInfo.CachedFileName);
 
-                // Use cached DLL if Registered_Datetime not changed.
+                // Use cached original DLL if Registered_Datetime not changed.
                 if (rbAppDllInfo.AppId == rbapprc.AppId
                     && rbAppDllInfo.AppProcessingId == rbapprc.AppProcessingId
                     && rbAppDllInfo.Registered_DateTime == rbapprc.Registered_DateTime)
                 {
-                    load_action = false;
+                    blobCopyAction = false;
                 }
             }
 
-            if (load_action)
+            // Check partitioned DLL info
+            if (rbAppDllCacheInfoDic.ContainsKey(partitionedFileNameKey))
             {
-                if (curFilePath != string.Empty)
+                // DLL copied into each partition directory
+                rbAppDllInfo_partition = (RbAppDllCacheInfo)rbAppDllCacheInfoDic[partitionedFileNameKey];
+                cachedDllFileInfo.PrivateDllFilePath = Path.Combine(rbAppDllInfo_partition.CacheDir, rbAppDllInfo_partition.CachedFileName);
+
+                // Use cached DLL copied into each partition directory if Registered_Datetime not changed.
+                if (rbAppDllInfo_partition.AppId == rbapprc.AppId
+                    && rbAppDllInfo_partition.AppProcessingId == rbapprc.AppProcessingId
+                    && rbAppDllInfo_partition.Registered_DateTime == rbapprc.Registered_DateTime)
+                {
+                    loadAction = false;
+                }
+            }
+
+            if (loadAction)
+            {
+                if (blobTargetFilePath != string.Empty)
                 {
                     AppDomain appDomain = null; 
                     if (appDomainList.ContainsKey(partitionId))
@@ -440,60 +476,108 @@ namespace CloudRoboticsFX.Worker
                             appDomainList[partitionId] = null;
                         }
                     }
-                    
-                    // Move current DLL to archive directory
-                    if (File.Exists(curFilePath))
+
+                    if (blobCopyAction)
                     {
-                        string archivedDirectory = curdir + @"\" + archivedDirectoryName;
-                        string archivedDllFilePath = archivedDirectory + @"\" + rbapprc.FileName 
-                                                   + ".bk" + DateTime.Now.ToString("yyyyMMddHHmmss");
-                        if (!Directory.Exists(archivedDirectory))
+                        // Move current DLL to archive directory
+                        if (File.Exists(blobTargetFilePath))
                         {
-                            Directory.CreateDirectory(archivedDirectory);
+                            string archivedDirectory = Path.Combine(curdir, archivedDirectoryName);
+                            string archivedDllFilePath = archivedDirectory + @"\" + rbapprc.FileName
+                                                       + ".bk" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                            if (!Directory.Exists(archivedDirectory))
+                            {
+                                Directory.CreateDirectory(archivedDirectory);
+                            }
+                            File.Move(blobTargetFilePath, archivedDllFilePath);
                         }
-                        File.Move(curFilePath, archivedDllFilePath);
                     }
                 }
-                // Download DLL from BLOB
-                RbAzureStorage rbAzureStorage = new RbAzureStorage(rbappmc.StorageAccount, rbappmc.StorageKey);
-                rbAppDllInfo = new RbAppDllCacheInfo();
-                rbAppDllInfo.FileName = rbapprc.FileName;
-                rbAppDllInfo.CacheDir = curdir;
-                rbAppDllInfo.AppId = rbapprc.AppId;
-                rbAppDllInfo.AppProcessingId = rbapprc.AppProcessingId;
-                rbAppDllInfo.Registered_DateTime = rbapprc.Registered_DateTime;
-                //rbAppDllInfo.GenerateCachedFileName();
-                rbAppDllInfo.CachedFileName = rbAppDllInfo.FileName;
 
-                curFilePath = Path.Combine(rbAppDllInfo.CacheDir, rbAppDllInfo.CachedFileName);
-                using (var fileStream = File.OpenWrite(curFilePath))
+                if (blobCopyAction)
                 {
-                    rbAzureStorage.BlockBlobDownload(fileStream, rbapprc.BlobContainer, rbapprc.FileName);
+                    // Download DLL from BLOB
+                    RbAzureStorage rbAzureStorage = new RbAzureStorage(rbappmc.StorageAccount, rbappmc.StorageKey);
+                    rbAppDllInfo = new RbAppDllCacheInfo();
+                    rbAppDllInfo.FileName = rbapprc.FileName;
+                    rbAppDllInfo.CacheDir = Path.Combine(curdir, "cache");
+                    if (!Directory.Exists(rbAppDllInfo.CacheDir))
+                        Directory.CreateDirectory(rbAppDllInfo.CacheDir);
+                    rbAppDllInfo.AppId = rbapprc.AppId;
+                    rbAppDllInfo.AppProcessingId = rbapprc.AppProcessingId;
+                    rbAppDllInfo.Registered_DateTime = rbapprc.Registered_DateTime;
+                    //rbAppDllInfo.GenerateCachedFileName();
+                    rbAppDllInfo.CachedFileName = rbAppDllInfo.FileName;
+                    blobTargetFilePath = Path.Combine(rbAppDllInfo.CacheDir, rbAppDllInfo.CachedFileName);
+
+                    using (var fileStream = File.OpenWrite(blobTargetFilePath))
+                    {
+                        rbAzureStorage.BlockBlobDownload(fileStream, rbapprc.BlobContainer, rbapprc.FileName);
+                    }
+
+                    // Update cache info if DLL download from BLOB is successful.
+                    lock (thisLock2)
+                    {
+                        rbAppDllCacheInfoDic[rbapprc.FileName] = rbAppDllInfo;
+                    }
+
+                    // Logging
+                    if (rbTraceLevel == RbTraceType.Detail)
+                    {
+                        RbTraceLog.WriteLog(string.Format("App DLL is copied from BLOB strage.  Dir:{0}, FileName:{1}",
+                                     curdir, rbAppDllInfo.CachedFileName));
+                    }
                 }
 
-                // Update cache info if DLL download from BLOB is successful.
-                rbAppDllCacheInfoDic[rbapprc.FileName] = rbAppDllInfo;
+                // Copy original DLL into partition directory
+                rbAppDllInfo_partition = new RbAppDllCacheInfo();
+                rbAppDllInfo_partition.FileName = rbapprc.FileName;
+                rbAppDllInfo_partition.CacheDir = cachedDllFileInfo.PrivateDllDirectory;
+                rbAppDllInfo_partition.AppId = rbapprc.AppId;
+                rbAppDllInfo_partition.AppProcessingId = rbapprc.AppProcessingId;
+                rbAppDllInfo_partition.Registered_DateTime = rbapprc.Registered_DateTime;
+                rbAppDllInfo_partition.CachedFileName = rbAppDllInfo_partition.FileName;
 
+                string sourceFilePath = Path.Combine(rbAppDllInfo.CacheDir, rbAppDllInfo.CachedFileName);
+                string targetFilePath = Path.Combine(rbAppDllInfo_partition.CacheDir, rbAppDllInfo_partition.CachedFileName);
+                cachedDllFileInfo.PrivateDllFilePath = targetFilePath;
+                if (!Directory.Exists(rbAppDllInfo_partition.CacheDir))
+                    Directory.CreateDirectory(rbAppDllInfo_partition.CacheDir);
+                File.Copy(sourceFilePath, targetFilePath, true);
+
+                // Update cache info if DLL copied successfully.
+                lock (thisLock2)
+                {
+                    rbAppDllCacheInfoDic[partitionedFileNameKey] = rbAppDllInfo_partition;
+                }
+
+                // Logging
                 if (rbTraceLevel == RbTraceType.Detail)
                 {
-                    RbTraceLog.WriteLog(string.Format("App DLL is copied from BLOB strage.  Dir:{0}, FileName:{1}",
-                                 curdir, rbAppDllInfo.CachedFileName));
+                    RbTraceLog.WriteLog(string.Format("Original App DLL is copied into partition directory.  Dir:{0}, FileName:{1}, PartitionId:{2}",
+                                 curdir, rbAppDllInfo.CachedFileName, partitionId));
                 }
             }
 
-            return curFilePath;
+            return cachedDllFileInfo;
         }
 
-        AppDomain CreateAppDomain(string appName, string baseDirectory)
+        private class CachedDllFileInfo
+        {
+            public string BaseDirectory { set; get; }
+            public string PrivateDllDirectory { set; get; }
+            public string PrivateDllFilePath { set; get; }
+        }
+
+        AppDomain CreateAppDomain(string appName, string baseDirectory, string privateDllDirectory)
         {
             AppDomainSetup setup = new AppDomainSetup();
             setup.ApplicationName = appName;
-            setup.ApplicationBase = baseDirectory;
-            //setup.ApplicationBase = AppDomain.CurrentDomain.BaseDirectory;
-            //setup.PrivateBinPath = pluginFolder;
-            //setup.CachePath = Path.Combine(pluginDirectory, "cache" + Path.DirectorySeparatorChar);
-            //setup.ShadowCopyFiles = "true";
-            //setup.ShadowCopyDirectories = pluginDirectory;
+            setup.ApplicationBase = baseDirectory;       //AppDomain.CurrentDomain.BaseDirectory
+            setup.PrivateBinPath = privateDllDirectory;
+            setup.CachePath = Path.Combine(privateDllDirectory, "cache" + Path.DirectorySeparatorChar);
+            setup.ShadowCopyFiles = "true";
+            setup.ShadowCopyDirectories = privateDllDirectory;
 
             AppDomain appDomain = AppDomain.CreateDomain(appName, null, setup);
 
