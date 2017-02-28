@@ -112,7 +112,7 @@ namespace CloudRoboticsFX.Worker
                         RbHeaderBuilder hdBuilder = new RbHeaderBuilder(jo_message, iothub_deviceId);
                         RbHeader rbh = hdBuilder.ValidateJsonSchema();
 
-                        // Check Routing
+                        // Check Routing (CALL, D2D, CONTROL)
                         if (rbh.RoutingType == RbRoutingType.CALL)
                         {
                             appRouting = true;
@@ -129,6 +129,11 @@ namespace CloudRoboticsFX.Worker
                         {
                             devRouting = false;
                             appRouting = false;
+                        }
+                        else
+                        {
+                            RbTraceLog.WriteError("W001", "** Message skipped because of bad RoutingType **", jo_message);
+                            continue;
                         }
 
                         // Device Router builds RbHeader
@@ -162,9 +167,17 @@ namespace CloudRoboticsFX.Worker
                         }
 
                         // RoutingType="CONTROL" and AppProcessingId="ReqAppInfo" 
-                        if (rbh.RoutingType == RbRoutingType.CONTROL && rbh.AppProcessingId == RbControlType.ReqAppInfo)
+                        if (rbh.RoutingType == RbRoutingType.CONTROL)
                         {
-                            ja_messages = ProcessControlMessage(rbh);
+                            if (rbh.AppProcessingId == RbControlType.ReqAppInfo)
+                            {
+                                ja_messages = ProcessControlMessage(rbh);
+                            }
+                            else
+                            {
+                                RbTraceLog.WriteError("W002", "** Message skipped because of bad AppProcessingId when CONTROL RoutingType **", jo_message);
+                                continue;
+                            }
                         }
 
                         // Send C2D Message
