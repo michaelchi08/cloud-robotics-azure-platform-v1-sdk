@@ -102,8 +102,15 @@ namespace CloudRoboticsFX.Worker
                         if (jo_rbh != null)
                         {
                             string jo_rbh_RoutingType = (string)jo_rbh[RbHeaderElement.RoutingType];
-                            if (jo_rbh_RoutingType == RbRoutingType.LOG)
+                            // Check RoutingType (LOG, null)
+                            if (jo_rbh_RoutingType == null)
                             {
+                                RbTraceLog.WriteError("W001", "** Message skipped because RoutingType is null **", jo_message);
+                                continue;
+                            }
+                            else if (jo_rbh_RoutingType == RbRoutingType.LOG)
+                            {
+                                // RoutingType == LOG -> only using IoT Hub with Stream Analytics  
                                 continue;
                             }
                         }
@@ -112,7 +119,7 @@ namespace CloudRoboticsFX.Worker
                         RbHeaderBuilder hdBuilder = new RbHeaderBuilder(jo_message, iothub_deviceId);
                         RbHeader rbh = hdBuilder.ValidateJsonSchema();
 
-                        // Check Routing (CALL, D2D, CONTROL)
+                        // Check RoutingType (CALL, D2D, CONTROL)
                         if (rbh.RoutingType == RbRoutingType.CALL)
                         {
                             appRouting = true;
@@ -132,7 +139,7 @@ namespace CloudRoboticsFX.Worker
                         }
                         else
                         {
-                            RbTraceLog.WriteError("W001", "** Message skipped because of bad RoutingType **", jo_message);
+                            RbTraceLog.WriteError("W002", "** Message skipped because of bad RoutingType **", jo_message);
                             continue;
                         }
 
@@ -169,13 +176,18 @@ namespace CloudRoboticsFX.Worker
                         // RoutingType="CONTROL" and AppProcessingId="ReqAppInfo" 
                         if (rbh.RoutingType == RbRoutingType.CONTROL)
                         {
-                            if (rbh.AppProcessingId == RbControlType.ReqAppInfo)
+                            if (rbh.AppProcessingId == null)
+                            {
+                                RbTraceLog.WriteError("W003", "** Message skipped because AppProcessingId is null when CONTROL RoutingType **", jo_message);
+                                continue;
+                            }
+                            else if (rbh.AppProcessingId == RbControlType.ReqAppInfo)
                             {
                                 ja_messages = ProcessControlMessage(rbh);
                             }
                             else
                             {
-                                RbTraceLog.WriteError("W002", "** Message skipped because of bad AppProcessingId when CONTROL RoutingType **", jo_message);
+                                RbTraceLog.WriteError("W004", "** Message skipped because of bad AppProcessingId when CONTROL RoutingType **", jo_message);
                                 continue;
                             }
                         }
