@@ -120,6 +120,7 @@
   <ItemGroup>
     <Compile Include="AppMaster.cs" />
     <Compile Include="AppRouter.cs" />
+    <Compile Include="RbAppLog.cs" />
     <Compile Include="RbAzureStorage.cs" />
     <Compile Include="C2dMessageSender.cs" />
     <Compile Include="CommonTypes.cs" />
