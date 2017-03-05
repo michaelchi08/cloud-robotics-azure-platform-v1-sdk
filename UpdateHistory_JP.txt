@@ -1,4 +1,9 @@
 2017/03/05
+- CloudRoboticsUtil
+- CloudRoboticsFX
+	- Storage (Table) API を利用する際の Nuget Package "Microsoft.Data.OData" のバージョン不一致
+	- "Microsoft.Data.OData" のバージョンを v5.7.0 に戻しました
+2017/03/04
 - CloudRoboticsUtil/CloudRoboticsUtil/RbAppLog.cs
 	- App DLL から利用可能なログ出力クラスを追加
 2017/03/01
