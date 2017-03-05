@@ -1,3 +1,7 @@
+2017/03/06
+- CloudRoboticsApi (New)
+        - Source code, interface specification and setup manual of Cloud Robotics API
+        - Source code and hands-on text on how to call Cloud Robotics Face API & Photo Description API from Pepper (provided by JBS)
 2017/03/05
 - CloudRoboticsUtil/CloudRoboticsUtil/RbAppLog.cs
 	- Add a new common logging class for App DLL
