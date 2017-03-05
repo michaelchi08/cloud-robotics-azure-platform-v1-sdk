@@ -1,4 +1,9 @@
 2017/03/05
+- CloudRoboticsUtil
+- CloudRoboticsFX
+	- Nuget Package "Microsoft.Data.OData" version unmatched the current Storage (Table) API version.
+	- "Microsoft.Data.OData" version rollbacked to v5.7.0
+2017/03/04
 - CloudRoboticsUtil/CloudRoboticsUtil/RbAppLog.cs
         - Add a new common logging class for App DLL
 2017/03/01
