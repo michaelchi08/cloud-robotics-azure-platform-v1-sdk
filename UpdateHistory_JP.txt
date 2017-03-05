@@ -3,7 +3,7 @@
 	- Cloud Robotics API のソースコード、インターフェース仕様、セットアップ手順を公開しました
 	- Pepper から顔認識 API、写真説明 API を呼び出す為のコード、ハンスオン資料を公開しました (JBS様の寄贈分)
 2017/03/05
-- CloudRoboticsUtil/CloudRoboticsUtil/RbAppLog.cs
+- CloudRoboticsUtil/CloudRoboticsUtil/RbAppLog.cs (New)
 	- App DLL から利用可能なログ出力クラスを追加
 - CloudRoboticsUtil
 	- すべての Nuget Package のバージョンをアップデートしました
