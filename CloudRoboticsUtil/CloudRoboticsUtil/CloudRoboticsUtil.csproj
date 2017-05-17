@@ -138,6 +138,7 @@
     <Compile Include="RbHearderBuilder.cs" />
     <Compile Include="RbMessage.cs" />
     <Compile Include="RbTraceLog.cs" />
+    <Compile Include="RbTraceLog2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
