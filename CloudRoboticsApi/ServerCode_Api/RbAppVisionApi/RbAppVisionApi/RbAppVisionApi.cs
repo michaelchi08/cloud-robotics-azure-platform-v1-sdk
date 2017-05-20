@@ -119,8 +119,8 @@ namespace RbAppVisionApi
 
                         // translate text.
                         DateTime dt3 = DateTime.Now;
-                        string translatedDescription = translateText(descriptionText, translatorAccountKey, languageCode, true);
-                        string translatedTags = translateText(baseTextTags, translatorAccountKey, languageCode, false);
+                        string translatedDescription = translateText(descriptionText, translatorAccountKey, languageCode);
+                        string translatedTags = translateText(baseTextTags, translatorAccountKey, languageCode);
                         DateTime dt4 = DateTime.Now;
                         TimeSpan ts2 = dt4 - dt3;
 
@@ -263,7 +263,7 @@ namespace RbAppVisionApi
         /// <param name="translatorAccountKey"></param>
         /// <param name="tolang"></param>
         /// <returns></returns>
-        private string translateText(string text, string translatorAccountKey, string tolang = "en", bool dnnMode = true)
+        private string translateText(string text, string translatorAccountKey, string tolang = "en")
         {
             //
             // Get a token
@@ -308,11 +308,9 @@ namespace RbAppVisionApi
                 // request
                 var request = new HttpRequestMessage();
                 request.Method = HttpMethod.Get;
-                string dnn = "generalnn";
-                if (dnnMode)
-                    request.RequestUri = new Uri(translateUrl + $"?category={dnn}&text={escapeText}&to={tolang}");
-                else
-                    request.RequestUri = new Uri(translateUrl + $"?text={escapeText}&to={tolang}");
+                //string dnn = "generalnn";
+                //request.RequestUri = new Uri(translateUrl + $"?category={dnn}&text={escapeText}&to={tolang}");
+                request.RequestUri = new Uri(translateUrl + $"?text={escapeText}&to={tolang}");
 
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 var translationResponse = client.SendAsync(request);

@@ -159,8 +159,9 @@ namespace RbAppTranslatorApi
                 // request
                 var request = new HttpRequestMessage();
                 request.Method = HttpMethod.Get;
-                string dnn = "generalnn";
-                request.RequestUri = new Uri(translateUrl + $"?category={dnn}&text={escapeText}&to={tolang}");
+                //string dnn = "generalnn";
+                //request.RequestUri = new Uri(translateUrl + $"?category={dnn}&text={escapeText}&to={tolang}");
+                request.RequestUri = new Uri(translateUrl + $"?text={escapeText}&to={tolang}");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var translationResponse = client.SendAsync(request);
