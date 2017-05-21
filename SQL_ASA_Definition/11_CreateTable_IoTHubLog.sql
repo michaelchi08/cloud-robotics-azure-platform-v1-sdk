@@ -28,7 +28,11 @@ CREATE TABLE [RBApp].[IoTHubLog](
 	[stock] [nvarchar](100) NULL,
 	[result] [nvarchar](100) NULL,
 )
-CREATE CLUSTERED COLUMNSTORE INDEX CCI ON [RBApp].[IoTHubLog]
+
+----
+--This is an option.
+----
+--CREATE CLUSTERED COLUMNSTORE INDEX CCI ON [RBApp].[IoTHubLog]
 
 GO
 
