@@ -564,14 +564,13 @@ namespace CloudRoboticsFX.Worker
                     rbAppDllInfo.CachedFileName = rbAppDllInfo.FileName;
                     blobTargetFilePath = Path.Combine(rbAppDllInfo.CacheDir, rbAppDllInfo.CachedFileName);
 
-                    using (var fileStream = File.OpenWrite(blobTargetFilePath))
-                    {
-                        rbAzureStorage.BlockBlobDownload(fileStream, rbapprc.BlobContainer, rbapprc.FileName);
-                    }
-
-                    // Update cache info if DLL download from BLOB is successful.
                     lock (thisLock2)
                     {
+                        using (var fileStream = File.OpenWrite(blobTargetFilePath))
+                        {
+                            rbAzureStorage.BlockBlobDownload(fileStream, rbapprc.BlobContainer, rbapprc.FileName);
+                        }
+                        // Update cache info if DLL download from BLOB is successful.
                         rbAppDllCacheInfoDic[rbapprc.FileName] = rbAppDllInfo;
                     }
 
