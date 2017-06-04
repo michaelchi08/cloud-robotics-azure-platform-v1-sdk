@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package version="0.0.1" uuid="cloudroboticsapi_handson">
+<package uuid="cloudroboticsapi_handson" version="0.0.1">
  <names>
   <name lang="en_US">Cloud Robotics API HandsOn</name>
   <name lang="ja_JP">Cloud Robotics APIハンズオン</name>

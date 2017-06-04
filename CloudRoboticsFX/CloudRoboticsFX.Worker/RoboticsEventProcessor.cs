@@ -51,6 +51,10 @@ namespace CloudRoboticsFX.Worker
         private static string appDomanNameBase = "AppDomain_P";
         public static Dictionary<string, AppDomain> appDomainList = new Dictionary<string, AppDomain>();
 
+        // Retry when reconfiguration of SQLDB occurs
+        private int maxRetryCount = 20;
+        private int sleepTime = 500; // millisecond
+
         Task IEventProcessor.OpenAsync(PartitionContext context)
         {
             RbTraceLog.Initialize(rbTraceStorageConnString, rbTraceTableName, "CloudRoboticsFX");
@@ -69,177 +73,202 @@ namespace CloudRoboticsFX.Worker
             foreach (EventData eventData in messages)
             {
                 ++messagecnt;
+                int retryCount = 0;
                 bool devRouting = false;
                 bool appRouting = false;
                 bool rbHeaderNotFound = false;
                 string sqlConnString = rbSqlConnectionString;
                 string iothub_deviceId = (string)eventData.SystemProperties["iothub-connection-device-id"];
                 DateTime iothub_enqueuedTimeUtc = (DateTime)eventData.SystemProperties["EnqueuedTimeUtc"];
-                string text_message = Encoding.UTF8.GetString(eventData.GetBytes());
-                string text_message_100 = text_message.Substring(0, 100);
-                if (text_message_100.IndexOf(RbFormatType.RbHeader) < 0)
-                {
-                    rbHeaderNotFound = true;
-                    RbTraceLog.WriteLog(string.Format(RbExceptionMessage.RbHeaderNotFound + "  Partition:{0}, Message:{1}",
-                             context.Lease.PartitionId, text_message_100));
-                }
+                string text_message = string.Empty;
 
-                if (rbTraceLevel == RbTraceType.Detail)
+                // Retry loop logic for SQLDB reconfiguration exception
+                while (true)
                 {
-                    RbTraceLog.WriteLog(string.Format("RoboticsEventProcessor Message received.  Partition:{0}, Message:{1}",
-                                 context.Lease.PartitionId, text_message));
-                }
-                JObject jo_message = null;
-
-                if (!rbHeaderNotFound)  // Skip invalid data
-                {
-                    try
+                    text_message = Encoding.UTF8.GetString(eventData.GetBytes());
+                    string text_message_100 = text_message.Substring(0, 100);
+                    if (text_message_100.IndexOf(RbFormatType.RbHeader) < 0)
                     {
-                        jo_message = JsonConvert.DeserializeObject<JObject>(text_message);
+                        rbHeaderNotFound = true;
+                        RbTraceLog.WriteLog(string.Format(RbExceptionMessage.RbHeaderNotFound + "  Partition:{0}, Message:{1}",
+                                 context.Lease.PartitionId, text_message_100));
+                    }
 
-                        // Check RbHeader simplly
-                        var jo_rbh = (JObject)jo_message[RbFormatType.RbHeader];
-                        if (jo_rbh != null)
+                    if (rbTraceLevel == RbTraceType.Detail)
+                    {
+                        RbTraceLog.WriteLog(string.Format("RoboticsEventProcessor Message received.  Partition:{0}, Message:{1}",
+                                     context.Lease.PartitionId, text_message));
+                    }
+                    JObject jo_message = null;
+
+                    if (!rbHeaderNotFound)  // Skip invalid data
+                    {
+                        try
                         {
-                            string jo_rbh_RoutingType = (string)jo_rbh[RbHeaderElement.RoutingType];
-                            // Check RoutingType (LOG, null)
-                            if (jo_rbh_RoutingType == null)
+                            jo_message = JsonConvert.DeserializeObject<JObject>(text_message);
+
+                            // Check RbHeader simplly
+                            var jo_rbh = (JObject)jo_message[RbFormatType.RbHeader];
+                            if (jo_rbh != null)
                             {
-                                RbTraceLog.WriteError("W001", "** Message skipped because RoutingType is null **", jo_message);
-                                continue;
+                                string jo_rbh_RoutingType = (string)jo_rbh[RbHeaderElement.RoutingType];
+                                // Check RoutingType (LOG, null)
+                                if (jo_rbh_RoutingType == null)
+                                {
+                                    RbTraceLog.WriteError("W001", "** Message skipped because RoutingType is null **", jo_message);
+                                    goto MessageCheckPointLabel;
+                                }
+                                else if (jo_rbh_RoutingType == RbRoutingType.LOG)
+                                {
+                                    // RoutingType == LOG -> only using IoT Hub with Stream Analytics  
+                                    goto MessageCheckPointLabel;
+                                }
                             }
-                            else if (jo_rbh_RoutingType == RbRoutingType.LOG)
-                            {
-                                // RoutingType == LOG -> only using IoT Hub with Stream Analytics  
-                                continue;
-                            }
-                        }
 
-                        // Check RbHeader in detail
-                        RbHeaderBuilder hdBuilder = new RbHeaderBuilder(jo_message, iothub_deviceId);
-                        RbHeader rbh = hdBuilder.ValidateJsonSchema();
+                            // Check RbHeader in detail
+                            RbHeaderBuilder hdBuilder = new RbHeaderBuilder(jo_message, iothub_deviceId);
+                            RbHeader rbh = hdBuilder.ValidateJsonSchema();
 
-                        // Check RoutingType (CALL, D2D, CONTROL)
-                        if (rbh.RoutingType == RbRoutingType.CALL)
-                        {
-                            appRouting = true;
-                        }
-                        else if (rbh.RoutingType == RbRoutingType.D2D)
-                        {
-                            devRouting = true;
-                            if (rbh.AppProcessingId != string.Empty)
+                            // Check RoutingType (CALL, D2D, CONTROL)
+                            if (rbh.RoutingType == RbRoutingType.CALL)
                             {
                                 appRouting = true;
                             }
-                        }
-                        else if (rbh.RoutingType == RbRoutingType.CONTROL)
-                        {
-                            devRouting = false;
-                            appRouting = false;
-                        }
-                        else
-                        {
-                            RbTraceLog.WriteError("W002", "** Message skipped because of bad RoutingType **", jo_message);
-                            continue;
-                        }
-
-                        // Device Router builds RbHeader
-                        DeviceRouter dr = null;
-                        if (devRouting)
-                        {
-                            dr = new DeviceRouter(rbh, sqlConnString);
-                            rbh = dr.GetDeviceRouting();
-                            string new_header = JsonConvert.SerializeObject(rbh);
-                            jo_message[RbFormatType.RbHeader] = JsonConvert.DeserializeObject<JObject>(new_header);
-                        }
-                        else
-                        {
-                            rbh.TargetDeviceId = rbh.SourceDeviceId;
-                            rbh.TargetType = RbTargetType.Device;
-                        }
-
-                        // Application Routing
-                        JArray ja_messages = null;
-                        if (appRouting)
-                        {
-                            // Application Call Logic
-                            JObject jo_temp = (JObject)jo_message[RbFormatType.RbBody];
-                            string rbBodyString = JsonConvert.SerializeObject(jo_temp);
-                            ja_messages = CallApps(rbh, rbBodyString, context.Lease.PartitionId);
-                        }
-                        else if (rbh.RoutingType != RbRoutingType.CONTROL)
-                        {
-                            ja_messages = new JArray();
-                            ja_messages.Add(jo_message);
-                        }
-
-                        // RoutingType="CONTROL" and AppProcessingId="ReqAppInfo" 
-                        if (rbh.RoutingType == RbRoutingType.CONTROL)
-                        {
-                            if (rbh.AppProcessingId == null)
+                            else if (rbh.RoutingType == RbRoutingType.D2D)
                             {
-                                RbTraceLog.WriteError("W003", "** Message skipped because AppProcessingId is null when CONTROL RoutingType **", jo_message);
-                                continue;
+                                devRouting = true;
+                                if (rbh.AppProcessingId != string.Empty)
+                                {
+                                    appRouting = true;
+                                }
                             }
-                            else if (rbh.AppProcessingId == RbControlType.ReqAppInfo)
+                            else if (rbh.RoutingType == RbRoutingType.CONTROL)
                             {
-                                ja_messages = ProcessControlMessage(rbh);
+                                devRouting = false;
+                                appRouting = false;
                             }
                             else
                             {
-                                RbTraceLog.WriteError("W004", "** Message skipped because of bad AppProcessingId when CONTROL RoutingType **", jo_message);
-                                continue;
+                                RbTraceLog.WriteError("W002", "** Message skipped because of bad RoutingType **", jo_message);
+                                goto MessageCheckPointLabel;
                             }
-                        }
 
-                        // Send C2D Message
-                        C2dMessageSender c2dsender = null;
-                        if (rbh.RoutingType == RbRoutingType.CALL
-                            || rbh.RoutingType == RbRoutingType.D2D
-                            || rbh.RoutingType == RbRoutingType.CONTROL)
-                        {
-                            c2dsender = new C2dMessageSender(ja_messages, rbIotHubConnString, sqlConnString);
-                            c2dsender.SendToDevice();
-                        }
-
-                        // C2D Message Logging to Event Hub
-                        if (rbC2dLogEnabled)
-                        {
-                            //RbEventMessageLog rbEventMessageLog = new RbEventMessageLog();
-                            //rbEventMessageLog.MessageType = RbMessageLogType.C2dType;
-                            //rbEventMessageLog.SendUtcDateTime = DateTime.UtcNow;
-                            //rbEventMessageLog.Messages = ja_messages;
-                            //string str_messages = JsonConvert.SerializeObject(rbEventMessageLog);
-                            RbEventHubs rbEventHubs = new RbEventHubs(rbC2dLogEventHubConnString, rbC2dLogEventHubName);
-                            foreach (JObject jo in ja_messages)
+                            // Device Router builds RbHeader
+                            DeviceRouter dr = null;
+                            if (devRouting)
                             {
-                                string str_message = JsonConvert.SerializeObject(jo);
-                                rbEventHubs.SendMessage(str_message, iothub_deviceId);
+                                dr = new DeviceRouter(rbh, sqlConnString);
+                                rbh = dr.GetDeviceRouting();
+                                string new_header = JsonConvert.SerializeObject(rbh);
+                                jo_message[RbFormatType.RbHeader] = JsonConvert.DeserializeObject<JObject>(new_header);
+                            }
+                            else
+                            {
+                                rbh.TargetDeviceId = rbh.SourceDeviceId;
+                                rbh.TargetType = RbTargetType.Device;
+                            }
+
+                            // Application Routing
+                            JArray ja_messages = null;
+                            if (appRouting)
+                            {
+                                // Application Call Logic
+                                JObject jo_temp = (JObject)jo_message[RbFormatType.RbBody];
+                                string rbBodyString = JsonConvert.SerializeObject(jo_temp);
+                                ja_messages = CallApps(rbh, rbBodyString, context.Lease.PartitionId);
+                            }
+                            else if (rbh.RoutingType != RbRoutingType.CONTROL)
+                            {
+                                ja_messages = new JArray();
+                                ja_messages.Add(jo_message);
+                            }
+
+                            // RoutingType="CONTROL" and AppProcessingId="ReqAppInfo" 
+                            if (rbh.RoutingType == RbRoutingType.CONTROL)
+                            {
+                                if (rbh.AppProcessingId == null)
+                                {
+                                    RbTraceLog.WriteError("W003", "** Message skipped because AppProcessingId is null when CONTROL RoutingType **", jo_message);
+                                    goto MessageCheckPointLabel;
+                                }
+                                else if (rbh.AppProcessingId == RbControlType.ReqAppInfo)
+                                {
+                                    ja_messages = ProcessControlMessage(rbh);
+                                }
+                                else
+                                {
+                                    RbTraceLog.WriteError("W004", "** Message skipped because of bad AppProcessingId when CONTROL RoutingType **", jo_message);
+                                    goto MessageCheckPointLabel;
+                                }
+                            }
+
+                            // Send C2D Message
+                            C2dMessageSender c2dsender = null;
+                            if (rbh.RoutingType == RbRoutingType.CALL
+                                || rbh.RoutingType == RbRoutingType.D2D
+                                || rbh.RoutingType == RbRoutingType.CONTROL)
+                            {
+                                c2dsender = new C2dMessageSender(ja_messages, rbIotHubConnString, sqlConnString);
+                                c2dsender.SendToDevice();
+                            }
+
+                            // C2D Message Logging to Event Hub
+                            if (rbC2dLogEnabled)
+                            {
+                                //RbEventMessageLog rbEventMessageLog = new RbEventMessageLog();
+                                //rbEventMessageLog.MessageType = RbMessageLogType.C2dType;
+                                //rbEventMessageLog.SendUtcDateTime = DateTime.UtcNow;
+                                //rbEventMessageLog.Messages = ja_messages;
+                                //string str_messages = JsonConvert.SerializeObject(rbEventMessageLog);
+                                RbEventHubs rbEventHubs = new RbEventHubs(rbC2dLogEventHubConnString, rbC2dLogEventHubName);
+                                foreach (JObject jo in ja_messages)
+                                {
+                                    string str_message = JsonConvert.SerializeObject(jo);
+                                    rbEventHubs.SendMessage(str_message, iothub_deviceId);
+                                }
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ex.GetType() == typeof(SqlException))  // "is" matches extended type as well
+                            {
+                                sqlex_on = true;
+                                ++retryCount;
+                                if (retryCount > maxRetryCount)
+                                {
+                                    sqlex_on = false;
+                                    RbTraceLog.WriteError("E001", ex.ToString(), jo_message);
+                                }
+                                else
+                                {
+                                    RbTraceLog.WriteLog($"Message processing retry ... count({retryCount})");
+                                    Thread.Sleep(sleepTime);
+                                }
+                            }
+                            else
+                            {
+                                sqlex_on = false;
+                                RbTraceLog.WriteError("E001", ex.ToString(), jo_message);
                             }
                         }
-
                     }
-                    //catch (SqlException sqlex)
-                    //{
-                    //    sqlex_on = true;
-                    //}
-                    catch (Exception ex)
+
+                    if (sqlex_on)
                     {
-                        RbTraceLog.WriteError("E001", ex.ToString(), jo_message);
-                        if (ex.GetType() == typeof(SqlException))  // "is" matches extended type as well
-                            sqlex_on = true;
+                        sqlex_on = false;
+                    }
+                    else
+                    {
+                        goto MessageCheckPointLabel;
                     }
                 }
 
-                if (sqlex_on)
-                {
-                    sqlex_on = false;
-                }
-                else
-                {
-                    // go forward read pointer if not sqlexception
-                    await context.CheckpointAsync();
-                }
+                // Label - Check Point
+                MessageCheckPointLabel:;
+
+                // go forward read pointer
+                await context.CheckpointAsync();
             }
         }
 
