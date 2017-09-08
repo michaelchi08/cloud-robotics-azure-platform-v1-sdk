@@ -108,7 +108,7 @@ namespace CloudRoboticsFX.Worker
             string archivedDirectory = Environment.CurrentDirectory + @"\" + archivedDirectoryName;
             if (Directory.Exists(archivedDirectory))
             {
-                Directory.Delete(archivedDirectory);
+                Directory.Delete(archivedDirectory, true);
             }
 
             // Event Processor Host
