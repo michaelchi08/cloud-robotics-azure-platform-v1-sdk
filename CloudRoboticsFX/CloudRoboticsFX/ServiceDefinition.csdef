@@ -8,6 +8,7 @@
       <Setting name="IoTHub.StorageAccountName" />
       <Setting name="IoTHub.StorageAccountKey" />
       <Setting name="IoTHub.ConsumerGroupName" />
+      <Setting name="StorageQueue.SendEnabled" />
       <Setting name="RbCache.ExpiredTimeSec" />
       <Setting name="RbEnc.PassPhrase" />
       <Setting name="SqlConnectionString" />

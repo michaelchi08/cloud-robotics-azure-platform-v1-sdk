@@ -25,5 +25,10 @@ namespace CloudRoboticsDefTool
         {
 
         }
+
+        private void DeviceCreatedForm_Activated(object sender, EventArgs e)
+        {
+            doneButton.Focus();
+        }
     }
 }

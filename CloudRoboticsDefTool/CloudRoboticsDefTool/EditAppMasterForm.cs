@@ -165,5 +165,10 @@ namespace CloudRoboticsDefTool
         {
             this.Close();
         }
+
+        private void EditAppMasterForm_Activated(object sender, EventArgs e)
+        {
+            textBoxAppId.Focus();
+        }
     }
 }

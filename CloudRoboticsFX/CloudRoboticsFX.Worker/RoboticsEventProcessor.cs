@@ -33,8 +33,12 @@ namespace CloudRoboticsFX.Worker
         public static string rbTraceStorageConnString = string.Empty;
         public static string rbTraceTableName = string.Empty;
         public static string rbTraceLevel = string.Empty;
+
+        // IoT Hub & Queue Storage
         public static string rbIotHubConnString = string.Empty;
-        
+        public static bool rbStorageQueueSendEnabled = false;
+        public static string rbStorageQueueConnString = string.Empty;
+
         // SQL Database Info for Cloud Robotics FX 
         public static string rbSqlConnectionString = string.Empty;
         public static string rbEncPassPhrase = string.Empty;
@@ -55,6 +59,25 @@ namespace CloudRoboticsFX.Worker
         // Retry when reconfiguration of SQLDB occurs
         private int maxRetryCount = 20;
         private int sleepTime = 500; // millisecond
+
+        /// <summary>
+        /// Reconfiguration may occur when the below error number returns from SQL Database.
+        /// It is necessary to retry when we face the below error number.
+        /// https://social.technet.microsoft.com/wiki/contents/articles/4235.retry-logic-for-transient-failures-in-windows-azure-sql-database.aspx
+        /// </summary>
+        // 20	    The instance of SQL Server does not support encryption.
+        // 64	    An error occurred during login. 
+        // 233	    Connection initialization error. 
+        // 10053	A transport-level error occurred when receiving results from the server. 
+        // 10054	A transport-level error occurred when sending the request to the server. 
+        // 10060	Network or instance-specific error. 
+        // 40143	Connection could not be initialized. 
+        // 40197	The service encountered an error processing your request.
+        // 40501	The server is busy. 
+        // 40613	The database is currently unavailable.
+        private List<int> sqlErrorListForRetry
+            = new List<int> { 20, 64, 233, 10053, 10054, 10060, 40143, 40197, 40501, 40613 };
+
 
         Task IEventProcessor.OpenAsync(PartitionContext context)
         {
@@ -229,23 +252,29 @@ namespace CloudRoboticsFX.Worker
                                 }
 
                                 // Send C2D Message
-                                C2dMessageSender c2dsender = null;
                                 if (rbh.RoutingType == RbRoutingType.CALL
                                     || rbh.RoutingType == RbRoutingType.D2D
                                     || rbh.RoutingType == RbRoutingType.CONTROL)
                                 {
-                                    c2dsender = new C2dMessageSender(ja_messages, rbIotHubConnString, sqlConnString);
-                                    c2dsender.SendToDevice();
+                                    if (rbStorageQueueSendEnabled)
+                                    {
+                                        // Send C2D message to Queue storage
+                                        RbC2dMessageToQueue c2dsender = null;
+                                        c2dsender = new RbC2dMessageToQueue(ja_messages, rbStorageQueueConnString, sqlConnString);
+                                        c2dsender.SendToDevice();
+                                    }
+                                    else
+                                    {
+                                        // Send C2D message to IoT Hub
+                                        RbC2dMessageSender c2dsender = null;
+                                        c2dsender = new RbC2dMessageSender(ja_messages, rbIotHubConnString, sqlConnString);
+                                        c2dsender.SendToDevice();
+                                    }
                                 }
 
                                 // C2D Message Logging to Event Hub
                                 if (rbC2dLogEnabled)
                                 {
-                                    //RbEventMessageLog rbEventMessageLog = new RbEventMessageLog();
-                                    //rbEventMessageLog.MessageType = RbMessageLogType.C2dType;
-                                    //rbEventMessageLog.SendUtcDateTime = DateTime.UtcNow;
-                                    //rbEventMessageLog.Messages = ja_messages;
-                                    //string str_messages = JsonConvert.SerializeObject(rbEventMessageLog);
                                     RbEventHubs rbEventHubs = new RbEventHubs(rbC2dLogEventHubConnString, rbC2dLogEventHubName);
                                     foreach (JObject jo in ja_messages)
                                     {
@@ -257,34 +286,47 @@ namespace CloudRoboticsFX.Worker
                             }
                             catch (Exception ex)
                             {
-                                if (ex.GetType() == typeof(SqlException))  // "is" matches extended type as well
+                                sqlex_on = false;
+
+                                if (ex != null && ex is SqlException)  // "is" matches extended type as well
                                 {
-                                    sqlex_on = true;
-                                    ++retryCount;
-                                    if (retryCount > maxRetryCount)
+                                    foreach (SqlError error in (ex as SqlException).Errors)
                                     {
-                                        sqlex_on = false;
-                                        RbTraceLog.WriteError("E001", ex.ToString(), jo_message);
+                                        if (sqlErrorListForRetry.Contains(error.Number))
+                                        {
+                                            sqlex_on = true;
+                                            break;  // Exit foreach loop
+                                        }
+                                    }
+
+                                    if (sqlex_on)
+                                    {
+                                        ++retryCount;
+
+                                        if (retryCount > maxRetryCount)
+                                        {
+                                            sqlex_on = false;
+                                            RbTraceLog.WriteError("E001", ex.ToString(), jo_message);
+                                        }
+                                        else
+                                        {
+                                            RbTraceLog.WriteLog($"Transaction retry has started. Count({retryCount})");
+                                            Thread.Sleep(sleepTime);
+                                        }
                                     }
                                     else
                                     {
-                                        RbTraceLog.WriteLog($"Message processing retry ... count({retryCount})");
-                                        Thread.Sleep(sleepTime);
+                                        RbTraceLog.WriteError("E001", ex.ToString(), jo_message);
                                     }
                                 }
                                 else
                                 {
-                                    sqlex_on = false;
                                     RbTraceLog.WriteError("E001", ex.ToString(), jo_message);
                                 }
                             }
                         }
 
-                        if (sqlex_on)
-                        {
-                            sqlex_on = false;
-                        }
-                        else
+                        if (!sqlex_on)
                         {
                             goto LoopExitLabel;
                         }
@@ -295,13 +337,10 @@ namespace CloudRoboticsFX.Worker
 
                     if (rbTraceLevel == RbTraceType.Detail)
                     {
-                        //20170830 start
                         TimeSpan ts = DateTime.UtcNow - startDateTimeUtc;
                         RbTraceLog.WriteLog(string.Format("RoboticsEventProcessor Message processed.  Duration:{0}, Partition:{1}, DeviceId{2}, Message:{3}",
                                     ts.ToString(), context.Lease.PartitionId, iothub_deviceId, text_message));
-                        //20170830 end
                     }
-
                 }
 
                 #endregion *** Handling unexpected exceptions ***
@@ -587,7 +626,7 @@ namespace CloudRoboticsFX.Worker
                         {
                             string archivedDirectory = Path.Combine(curdir, archivedDirectoryName);
                             string archivedDllFilePath = archivedDirectory + @"\" + rbapprc.FileName
-                                                       + ".bk" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                                                       + ".bk" + DateTime.Now.ToString("yyyyMMddHHmmssfffffff");
                             if (!Directory.Exists(archivedDirectory))
                             {
                                 Directory.CreateDirectory(archivedDirectory);

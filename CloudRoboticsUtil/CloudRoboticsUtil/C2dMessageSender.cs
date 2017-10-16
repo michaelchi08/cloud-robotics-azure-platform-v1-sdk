@@ -32,7 +32,7 @@ namespace CloudRoboticsUtil
                 {
                     var sendMessage = new Message(Encoding.UTF8.GetBytes(msg));
                     ServiceClient serviceClient = ServiceClient.CreateFromConnectionString(_iotHubConnString);
-                    await serviceClient.SendAsync(jo_TargetDeviceId, sendMessage);
+                    .await serviceClient.SendAsync(jo_TargetDeviceId, sendMessage);
                     await serviceClient.CloseAsync();
                 }
                 else

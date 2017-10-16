@@ -50,7 +50,7 @@
             this.comboBoxDeviceGroupId.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.comboBoxDeviceGroupId.Name = "comboBoxDeviceGroupId";
             this.comboBoxDeviceGroupId.Size = new System.Drawing.Size(602, 32);
-            this.comboBoxDeviceGroupId.TabIndex = 38;
+            this.comboBoxDeviceGroupId.TabIndex = 0;
             // 
             // label6
             // 
@@ -70,10 +70,10 @@
             this.cancelButton.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.cancelButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.cancelButton.Location = new System.Drawing.Point(581, 724);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(4);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(154, 50);
-            this.cancelButton.TabIndex = 36;
+            this.cancelButton.TabIndex = 7;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
@@ -84,10 +84,10 @@
             this.createButton.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.createButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.createButton.Location = new System.Drawing.Point(176, 724);
-            this.createButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.createButton.Margin = new System.Windows.Forms.Padding(4);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(154, 50);
-            this.createButton.TabIndex = 35;
+            this.createButton.TabIndex = 5;
             this.createButton.Text = "Create";
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
@@ -98,10 +98,10 @@
             this.updateButton.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.updateButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.updateButton.Location = new System.Drawing.Point(379, 724);
-            this.updateButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.updateButton.Margin = new System.Windows.Forms.Padding(4);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(154, 50);
-            this.updateButton.TabIndex = 39;
+            this.updateButton.TabIndex = 6;
             this.updateButton.Text = "Update";
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
@@ -117,7 +117,7 @@
             this.listBoxDevices.Name = "listBoxDevices";
             this.listBoxDevices.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listBoxDevices.Size = new System.Drawing.Size(357, 556);
-            this.listBoxDevices.TabIndex = 40;
+            this.listBoxDevices.TabIndex = 1;
             // 
             // label1
             // 
@@ -155,7 +155,7 @@
             this.listBoxSelectedDevices.Name = "listBoxSelectedDevices";
             this.listBoxSelectedDevices.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listBoxSelectedDevices.Size = new System.Drawing.Size(357, 556);
-            this.listBoxSelectedDevices.TabIndex = 43;
+            this.listBoxSelectedDevices.TabIndex = 3;
             // 
             // joinListButton
             // 
@@ -163,7 +163,7 @@
             this.joinListButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.joinListButton.Name = "joinListButton";
             this.joinListButton.Size = new System.Drawing.Size(91, 42);
-            this.joinListButton.TabIndex = 44;
+            this.joinListButton.TabIndex = 2;
             this.joinListButton.Text = ">>";
             this.joinListButton.UseVisualStyleBackColor = true;
             this.joinListButton.Click += new System.EventHandler(this.joinListButton_Click);
@@ -174,7 +174,7 @@
             this.removeListButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.removeListButton.Name = "removeListButton";
             this.removeListButton.Size = new System.Drawing.Size(91, 42);
-            this.removeListButton.TabIndex = 45;
+            this.removeListButton.TabIndex = 4;
             this.removeListButton.Text = "<<";
             this.removeListButton.UseVisualStyleBackColor = true;
             this.removeListButton.Click += new System.EventHandler(this.removeListButton_Click);
@@ -198,6 +198,7 @@
             this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Name = "EditDeviceGroupFrom";
             this.Text = "Edit Device Group";
+            this.Activated += new System.EventHandler(this.EditDeviceGroupFrom_Activated);
             this.Load += new System.EventHandler(this.EditDeviceGroupFrom_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

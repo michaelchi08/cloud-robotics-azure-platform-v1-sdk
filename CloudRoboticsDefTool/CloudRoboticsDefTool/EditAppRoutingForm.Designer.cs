@@ -66,10 +66,10 @@
             this.updateButton.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.updateButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.updateButton.Location = new System.Drawing.Point(609, 819);
-            this.updateButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.updateButton.Margin = new System.Windows.Forms.Padding(4);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(154, 50);
-            this.updateButton.TabIndex = 50;
+            this.updateButton.TabIndex = 14;
             this.updateButton.Text = "Update";
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
@@ -80,10 +80,10 @@
             this.cancelButton.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.cancelButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.cancelButton.Location = new System.Drawing.Point(810, 819);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(4);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(154, 50);
-            this.cancelButton.TabIndex = 49;
+            this.cancelButton.TabIndex = 15;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
@@ -94,10 +94,10 @@
             this.createButton.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.createButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.createButton.Location = new System.Drawing.Point(394, 819);
-            this.createButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.createButton.Margin = new System.Windows.Forms.Padding(4);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(154, 50);
-            this.createButton.TabIndex = 48;
+            this.createButton.TabIndex = 13;
             this.createButton.Text = "Create";
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
@@ -144,7 +144,7 @@
             this.textBoxDevLocalDir.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxDevLocalDir.Name = "textBoxDevLocalDir";
             this.textBoxDevLocalDir.Size = new System.Drawing.Size(918, 38);
-            this.textBoxDevLocalDir.TabIndex = 58;
+            this.textBoxDevLocalDir.TabIndex = 7;
             // 
             // label9
             // 
@@ -167,7 +167,7 @@
             this.comboBoxDevMode.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.comboBoxDevMode.Name = "comboBoxDevMode";
             this.comboBoxDevMode.Size = new System.Drawing.Size(918, 38);
-            this.comboBoxDevMode.TabIndex = 56;
+            this.comboBoxDevMode.TabIndex = 6;
             // 
             // label8
             // 
@@ -190,7 +190,7 @@
             this.textBoxFileName.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxFileName.Name = "textBoxFileName";
             this.textBoxFileName.Size = new System.Drawing.Size(918, 38);
-            this.textBoxFileName.TabIndex = 52;
+            this.textBoxFileName.TabIndex = 3;
             // 
             // label1
             // 
@@ -213,7 +213,7 @@
             this.textBoxClassName.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxClassName.Name = "textBoxClassName";
             this.textBoxClassName.Size = new System.Drawing.Size(918, 38);
-            this.textBoxClassName.TabIndex = 54;
+            this.textBoxClassName.TabIndex = 4;
             // 
             // label2
             // 
@@ -236,7 +236,7 @@
             this.textBoxBlobContainer.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxBlobContainer.Name = "textBoxBlobContainer";
             this.textBoxBlobContainer.Size = new System.Drawing.Size(918, 38);
-            this.textBoxBlobContainer.TabIndex = 39;
+            this.textBoxBlobContainer.TabIndex = 2;
             // 
             // label4
             // 
@@ -259,7 +259,7 @@
             this.textBoxAppProcessingId.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxAppProcessingId.Name = "textBoxAppProcessingId";
             this.textBoxAppProcessingId.Size = new System.Drawing.Size(918, 38);
-            this.textBoxAppProcessingId.TabIndex = 37;
+            this.textBoxAppProcessingId.TabIndex = 1;
             // 
             // label3
             // 
@@ -282,7 +282,7 @@
             this.textBoxAppId.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxAppId.Name = "textBoxAppId";
             this.textBoxAppId.Size = new System.Drawing.Size(918, 38);
-            this.textBoxAppId.TabIndex = 32;
+            this.textBoxAppId.TabIndex = 0;
             // 
             // label7
             // 
@@ -305,7 +305,7 @@
             this.comboBoxStatus.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.comboBoxStatus.Name = "comboBoxStatus";
             this.comboBoxStatus.Size = new System.Drawing.Size(918, 38);
-            this.comboBoxStatus.TabIndex = 32;
+            this.comboBoxStatus.TabIndex = 5;
             // 
             // label5
             // 
@@ -341,7 +341,7 @@
             this.textBoxDesc.Multiline = true;
             this.textBoxDesc.Name = "textBoxDesc";
             this.textBoxDesc.Size = new System.Drawing.Size(918, 88);
-            this.textBoxDesc.TabIndex = 28;
+            this.textBoxDesc.TabIndex = 8;
             // 
             // groupBox1
             // 
@@ -369,10 +369,11 @@
             this.uploadOnlyButton.Font = new System.Drawing.Font("Meiryo UI", 7.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.uploadOnlyButton.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.uploadOnlyButton.Location = new System.Drawing.Point(1116, 38);
-            this.uploadOnlyButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.uploadOnlyButton.Margin = new System.Windows.Forms.Padding(4);
             this.uploadOnlyButton.Name = "uploadOnlyButton";
             this.uploadOnlyButton.Size = new System.Drawing.Size(186, 50);
-            this.uploadOnlyButton.TabIndex = 49;
+            this.uploadOnlyButton.TabIndex = 12;
+            this.uploadOnlyButton.TabStop = false;
             this.uploadOnlyButton.Text = "Upload Only";
             this.uploadOnlyButton.UseVisualStyleBackColor = true;
             this.uploadOnlyButton.Click += new System.EventHandler(this.uploadOnlyButton_Click);
@@ -386,7 +387,7 @@
             this.searchButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(113, 44);
-            this.searchButton.TabIndex = 35;
+            this.searchButton.TabIndex = 10;
             this.searchButton.Text = "search";
             this.searchButton.UseVisualStyleBackColor = true;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
@@ -399,7 +400,7 @@
             this.checkBoxUploadToBlob.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.checkBoxUploadToBlob.Name = "checkBoxUploadToBlob";
             this.checkBoxUploadToBlob.Size = new System.Drawing.Size(471, 34);
-            this.checkBoxUploadToBlob.TabIndex = 34;
+            this.checkBoxUploadToBlob.TabIndex = 11;
             this.checkBoxUploadToBlob.Text = "Upload to BLOB (Simultaneously)";
             this.checkBoxUploadToBlob.UseVisualStyleBackColor = true;
             this.checkBoxUploadToBlob.CheckedChanged += new System.EventHandler(this.checkBoxUploadToBlob_CheckedChanged);
@@ -425,7 +426,7 @@
             this.textBoxUploadFilePath.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxUploadFilePath.Name = "textBoxUploadFilePath";
             this.textBoxUploadFilePath.Size = new System.Drawing.Size(795, 38);
-            this.textBoxUploadFilePath.TabIndex = 32;
+            this.textBoxUploadFilePath.TabIndex = 9;
             // 
             // EditAppRoutingForm
             // 
@@ -440,6 +441,7 @@
             this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Name = "EditAppRoutingForm";
             this.Text = "EditAppRoutingForm";
+            this.Activated += new System.EventHandler(this.EditAppRoutingForm_Activated);
             this.Load += new System.EventHandler(this.EditAppRoutingForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

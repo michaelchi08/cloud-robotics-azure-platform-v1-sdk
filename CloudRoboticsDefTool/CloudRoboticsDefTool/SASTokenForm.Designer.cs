@@ -47,10 +47,10 @@
             this.deviceKeyComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.deviceKeyComboBox.FormattingEnabled = true;
             this.deviceKeyComboBox.Location = new System.Drawing.Point(205, 122);
-            this.deviceKeyComboBox.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.deviceKeyComboBox.Margin = new System.Windows.Forms.Padding(8);
             this.deviceKeyComboBox.Name = "deviceKeyComboBox";
             this.deviceKeyComboBox.Size = new System.Drawing.Size(765, 38);
-            this.deviceKeyComboBox.TabIndex = 26;
+            this.deviceKeyComboBox.TabIndex = 1;
             this.deviceKeyComboBox.SelectedIndexChanged += new System.EventHandler(this.deviceKeyComboBox_SelectedIndexChanged);
             // 
             // label2
@@ -78,7 +78,7 @@
             this.numericUpDown1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.numericUpDown1.Location = new System.Drawing.Point(423, 205);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(5);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             365,
             0,
@@ -86,7 +86,7 @@
             0});
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(548, 38);
-            this.numericUpDown1.TabIndex = 27;
+            this.numericUpDown1.TabIndex = 2;
             // 
             // sasRichTextBox
             // 
@@ -94,11 +94,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.sasRichTextBox.Location = new System.Drawing.Point(70, 319);
-            this.sasRichTextBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.sasRichTextBox.Margin = new System.Windows.Forms.Padding(5);
             this.sasRichTextBox.Name = "sasRichTextBox";
             this.sasRichTextBox.ReadOnly = true;
             this.sasRichTextBox.Size = new System.Drawing.Size(900, 170);
             this.sasRichTextBox.TabIndex = 31;
+            this.sasRichTextBox.TabStop = false;
             this.sasRichTextBox.Text = "";
             // 
             // deviceIDComboBox
@@ -108,20 +109,20 @@
             this.deviceIDComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.deviceIDComboBox.FormattingEnabled = true;
             this.deviceIDComboBox.Location = new System.Drawing.Point(205, 44);
-            this.deviceIDComboBox.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.deviceIDComboBox.Margin = new System.Windows.Forms.Padding(8);
             this.deviceIDComboBox.Name = "deviceIDComboBox";
             this.deviceIDComboBox.Size = new System.Drawing.Size(765, 38);
-            this.deviceIDComboBox.TabIndex = 25;
+            this.deviceIDComboBox.TabIndex = 0;
             this.deviceIDComboBox.SelectedIndexChanged += new System.EventHandler(this.deviceIDComboBox_SelectedIndexChanged);
             // 
             // doneButton
             // 
             this.doneButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.doneButton.Location = new System.Drawing.Point(579, 522);
-            this.doneButton.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.doneButton.Margin = new System.Windows.Forms.Padding(5);
             this.doneButton.Name = "doneButton";
             this.doneButton.Size = new System.Drawing.Size(195, 60);
-            this.doneButton.TabIndex = 29;
+            this.doneButton.TabIndex = 4;
             this.doneButton.Text = "Done";
             this.doneButton.UseVisualStyleBackColor = true;
             this.doneButton.Click += new System.EventHandler(this.doneButton_Click);
@@ -130,10 +131,10 @@
             // 
             this.generateButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.generateButton.Location = new System.Drawing.Point(240, 522);
-            this.generateButton.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.generateButton.Margin = new System.Windows.Forms.Padding(5);
             this.generateButton.Name = "generateButton";
             this.generateButton.Size = new System.Drawing.Size(195, 60);
-            this.generateButton.TabIndex = 28;
+            this.generateButton.TabIndex = 3;
             this.generateButton.Text = "Generate";
             this.generateButton.UseVisualStyleBackColor = true;
             this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
@@ -166,6 +167,8 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "SASTokenForm";
             this.Text = "SASTokenForm";
+            this.Activated += new System.EventHandler(this.SASTokenForm_Activated);
+            this.Load += new System.EventHandler(this.SASTokenForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

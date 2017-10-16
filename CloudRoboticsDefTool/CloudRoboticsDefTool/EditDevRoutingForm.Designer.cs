@@ -29,6 +29,12 @@
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBoxRoutingKeyword = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxDeviceId = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBoxTargetDeviceId = new System.Windows.Forms.TextBox();
             this.comboBoxTargetDeviceType = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.comboBoxStatus = new System.Windows.Forms.ComboBox();
@@ -37,12 +43,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.textBoxDesc = new System.Windows.Forms.TextBox();
             this.textBoxTargetDevGroupId = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBoxTargetDeviceId = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBoxDeviceId = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBoxRoutingKeyword = new System.Windows.Forms.TextBox();
             this.updateButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.createButton = new System.Windows.Forms.Button();
@@ -76,6 +76,75 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "RBFX Device Routing Table";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label4.Location = new System.Drawing.Point(29, 97);
+            this.label4.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(223, 30);
+            this.label4.TabIndex = 38;
+            this.label4.Text = "Routing Keyword:";
+            // 
+            // textBoxRoutingKeyword
+            // 
+            this.textBoxRoutingKeyword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxRoutingKeyword.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.textBoxRoutingKeyword.Location = new System.Drawing.Point(385, 94);
+            this.textBoxRoutingKeyword.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.textBoxRoutingKeyword.Name = "textBoxRoutingKeyword";
+            this.textBoxRoutingKeyword.Size = new System.Drawing.Size(652, 38);
+            this.textBoxRoutingKeyword.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label3.Location = new System.Drawing.Point(29, 49);
+            this.label3.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(137, 30);
+            this.label3.TabIndex = 33;
+            this.label3.Text = "Device ID:";
+            // 
+            // textBoxDeviceId
+            // 
+            this.textBoxDeviceId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDeviceId.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.textBoxDeviceId.Location = new System.Drawing.Point(385, 46);
+            this.textBoxDeviceId.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.textBoxDeviceId.Name = "textBoxDeviceId";
+            this.textBoxDeviceId.Size = new System.Drawing.Size(652, 38);
+            this.textBoxDeviceId.TabIndex = 0;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label2.Location = new System.Drawing.Point(29, 257);
+            this.label2.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(219, 30);
+            this.label2.TabIndex = 36;
+            this.label2.Text = "Target Device ID:";
+            // 
+            // textBoxTargetDeviceId
+            // 
+            this.textBoxTargetDeviceId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxTargetDeviceId.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.textBoxTargetDeviceId.Location = new System.Drawing.Point(385, 254);
+            this.textBoxTargetDeviceId.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.textBoxTargetDeviceId.Name = "textBoxTargetDeviceId";
+            this.textBoxTargetDeviceId.Size = new System.Drawing.Size(652, 38);
+            this.textBoxTargetDeviceId.TabIndex = 4;
+            // 
             // comboBoxTargetDeviceType
             // 
             this.comboBoxTargetDeviceType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -84,7 +153,7 @@
             this.comboBoxTargetDeviceType.Location = new System.Drawing.Point(385, 157);
             this.comboBoxTargetDeviceType.Name = "comboBoxTargetDeviceType";
             this.comboBoxTargetDeviceType.Size = new System.Drawing.Size(652, 38);
-            this.comboBoxTargetDeviceType.TabIndex = 34;
+            this.comboBoxTargetDeviceType.TabIndex = 2;
             this.comboBoxTargetDeviceType.SelectedIndexChanged += new System.EventHandler(this.comboBoxTargetDeviceType_SelectedIndexChanged);
             // 
             // label7
@@ -107,7 +176,7 @@
             this.comboBoxStatus.Location = new System.Drawing.Point(385, 317);
             this.comboBoxStatus.Name = "comboBoxStatus";
             this.comboBoxStatus.Size = new System.Drawing.Size(652, 38);
-            this.comboBoxStatus.TabIndex = 32;
+            this.comboBoxStatus.TabIndex = 5;
             // 
             // label1
             // 
@@ -155,7 +224,7 @@
             this.textBoxDesc.Multiline = true;
             this.textBoxDesc.Name = "textBoxDesc";
             this.textBoxDesc.Size = new System.Drawing.Size(652, 89);
-            this.textBoxDesc.TabIndex = 28;
+            this.textBoxDesc.TabIndex = 6;
             // 
             // textBoxTargetDevGroupId
             // 
@@ -166,76 +235,7 @@
             this.textBoxTargetDevGroupId.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxTargetDevGroupId.Name = "textBoxTargetDevGroupId";
             this.textBoxTargetDevGroupId.Size = new System.Drawing.Size(652, 38);
-            this.textBoxTargetDevGroupId.TabIndex = 26;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label2.Location = new System.Drawing.Point(29, 257);
-            this.label2.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(219, 30);
-            this.label2.TabIndex = 36;
-            this.label2.Text = "Target Device ID:";
-            // 
-            // textBoxTargetDeviceId
-            // 
-            this.textBoxTargetDeviceId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxTargetDeviceId.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.textBoxTargetDeviceId.Location = new System.Drawing.Point(385, 254);
-            this.textBoxTargetDeviceId.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.textBoxTargetDeviceId.Name = "textBoxTargetDeviceId";
-            this.textBoxTargetDeviceId.Size = new System.Drawing.Size(652, 38);
-            this.textBoxTargetDeviceId.TabIndex = 35;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label3.Location = new System.Drawing.Point(29, 49);
-            this.label3.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(137, 30);
-            this.label3.TabIndex = 33;
-            this.label3.Text = "Device ID:";
-            // 
-            // textBoxDeviceId
-            // 
-            this.textBoxDeviceId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDeviceId.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.textBoxDeviceId.Location = new System.Drawing.Point(385, 46);
-            this.textBoxDeviceId.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.textBoxDeviceId.Name = "textBoxDeviceId";
-            this.textBoxDeviceId.Size = new System.Drawing.Size(652, 38);
-            this.textBoxDeviceId.TabIndex = 32;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label4.Location = new System.Drawing.Point(29, 97);
-            this.label4.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(223, 30);
-            this.label4.TabIndex = 38;
-            this.label4.Text = "Routing Keyword:";
-            // 
-            // textBoxRoutingKeyword
-            // 
-            this.textBoxRoutingKeyword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxRoutingKeyword.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.textBoxRoutingKeyword.Location = new System.Drawing.Point(385, 94);
-            this.textBoxRoutingKeyword.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.textBoxRoutingKeyword.Name = "textBoxRoutingKeyword";
-            this.textBoxRoutingKeyword.Size = new System.Drawing.Size(652, 38);
-            this.textBoxRoutingKeyword.TabIndex = 37;
+            this.textBoxTargetDevGroupId.TabIndex = 3;
             // 
             // updateButton
             // 
@@ -246,7 +246,7 @@
             this.updateButton.Margin = new System.Windows.Forms.Padding(4);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(153, 50);
-            this.updateButton.TabIndex = 42;
+            this.updateButton.TabIndex = 8;
             this.updateButton.Text = "Update";
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
@@ -260,7 +260,7 @@
             this.cancelButton.Margin = new System.Windows.Forms.Padding(4);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(153, 50);
-            this.cancelButton.TabIndex = 41;
+            this.cancelButton.TabIndex = 9;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
@@ -274,7 +274,7 @@
             this.createButton.Margin = new System.Windows.Forms.Padding(4);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(153, 50);
-            this.createButton.TabIndex = 40;
+            this.createButton.TabIndex = 7;
             this.createButton.Text = "Create";
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
@@ -290,6 +290,7 @@
             this.Controls.Add(this.groupBox2);
             this.Name = "EditDevRoutingForm";
             this.Text = "EditDevRoutingForm";
+            this.Activated += new System.EventHandler(this.EditDevRoutingForm_Activated);
             this.Load += new System.EventHandler(this.EditDevRoutingForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxSendLoop = new System.Windows.Forms.CheckBox();
+            this.textBoxQueStorageConnString = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.textBoxOutput = new System.Windows.Forms.TextBox();
             this.textBoxDeviceKey = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -50,6 +53,9 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.checkBoxSendLoop);
+            this.panel1.Controls.Add(this.textBoxQueStorageConnString);
+            this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.textBoxOutput);
             this.panel1.Controls.Add(this.textBoxDeviceKey);
             this.panel1.Controls.Add(this.label2);
@@ -68,6 +74,39 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1300, 857);
             this.panel1.TabIndex = 22;
+            // 
+            // checkBoxSendLoop
+            // 
+            this.checkBoxSendLoop.AutoSize = true;
+            this.checkBoxSendLoop.Font = new System.Drawing.Font("Segoe UI Symbol", 9F);
+            this.checkBoxSendLoop.Location = new System.Drawing.Point(739, 481);
+            this.checkBoxSendLoop.Name = "checkBoxSendLoop";
+            this.checkBoxSendLoop.Size = new System.Drawing.Size(161, 36);
+            this.checkBoxSendLoop.TabIndex = 29;
+            this.checkBoxSendLoop.Text = "Send Loop";
+            this.checkBoxSendLoop.UseVisualStyleBackColor = true;
+            this.checkBoxSendLoop.CheckedChanged += new System.EventHandler(this.checkBoxSendLoop_CheckedChanged);
+            // 
+            // textBoxQueStorageConnString
+            // 
+            this.textBoxQueStorageConnString.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxQueStorageConnString.Location = new System.Drawing.Point(820, 552);
+            this.textBoxQueStorageConnString.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.textBoxQueStorageConnString.Name = "textBoxQueStorageConnString";
+            this.textBoxQueStorageConnString.Size = new System.Drawing.Size(461, 31);
+            this.textBoxQueStorageConnString.TabIndex = 28;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI Symbol", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(516, 550);
+            this.label4.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(290, 32);
+            this.label4.TabIndex = 27;
+            this.label4.Text = "Queue Storage (Option) : ";
             // 
             // textBoxOutput
             // 
@@ -128,18 +167,18 @@
             this.textBoxIotHubHostName.Location = new System.Drawing.Point(195, 552);
             this.textBoxIotHubHostName.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.textBoxIotHubHostName.Name = "textBoxIotHubHostName";
-            this.textBoxIotHubHostName.Size = new System.Drawing.Size(606, 31);
+            this.textBoxIotHubHostName.Size = new System.Drawing.Size(290, 31);
             this.textBoxIotHubHostName.TabIndex = 21;
             // 
             // buttonReceive
             // 
             this.buttonReceive.Font = new System.Drawing.Font("Segoe UI Symbol", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonReceive.Location = new System.Drawing.Point(394, 469);
+            this.buttonReceive.Location = new System.Drawing.Point(4, 470);
             this.buttonReceive.Margin = new System.Windows.Forms.Padding(4);
             this.buttonReceive.Name = "buttonReceive";
-            this.buttonReceive.Size = new System.Drawing.Size(407, 57);
+            this.buttonReceive.Size = new System.Drawing.Size(444, 57);
             this.buttonReceive.TabIndex = 19;
-            this.buttonReceive.Text = "Receive from IoT Hub (Waiting)";
+            this.buttonReceive.Text = "Receive from IoT Hub or Queue";
             this.buttonReceive.UseVisualStyleBackColor = true;
             this.buttonReceive.Click += new System.EventHandler(this.buttonReceive_Click);
             // 
@@ -157,10 +196,10 @@
             // buttonSend
             // 
             this.buttonSend.Font = new System.Drawing.Font("Segoe UI Symbol", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSend.Location = new System.Drawing.Point(0, 469);
+            this.buttonSend.Location = new System.Drawing.Point(472, 470);
             this.buttonSend.Margin = new System.Windows.Forms.Padding(4);
             this.buttonSend.Name = "buttonSend";
-            this.buttonSend.Size = new System.Drawing.Size(366, 57);
+            this.buttonSend.Size = new System.Drawing.Size(243, 57);
             this.buttonSend.TabIndex = 18;
             this.buttonSend.Text = "Send to IoT Hub";
             this.buttonSend.UseVisualStyleBackColor = true;
@@ -249,5 +288,8 @@
         private System.Windows.Forms.ComboBox comboBoxJson;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox textBoxInput;
+        private System.Windows.Forms.CheckBox checkBoxSendLoop;
+        private System.Windows.Forms.TextBox textBoxQueStorageConnString;
+        private System.Windows.Forms.Label label4;
     }
 }

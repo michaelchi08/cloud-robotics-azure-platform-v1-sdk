@@ -2,6 +2,8 @@
 using Microsoft.Azure.Devices.Common;
 using System;
 using System.Windows.Forms;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace CloudRoboticsDefTool
 {
@@ -9,17 +11,19 @@ namespace CloudRoboticsDefTool
     {
         private string iotHubConnectionString;
         private string sqlConnectionString;
+        private string queueStorageConnString;
         private int devicesMaxCount;
         private RegistryManager registryManager;
         private bool generateDeviceID;
         private bool generateDeviceKeys;
 
-        public CreateDeviceForm(string iotHubConnectionString, string sqlConnectionString,int devicesMaxCount)
+        public CreateDeviceForm(string iotHubConnectionString, string sqlConnectionString, string queueStorageConnString, int devicesMaxCount)
         {
             InitializeComponent();
 
             this.iotHubConnectionString = iotHubConnectionString;
             this.sqlConnectionString = sqlConnectionString;
+            this.queueStorageConnString = queueStorageConnString;
             this.registryManager = RegistryManager.CreateFromConnectionString(iotHubConnectionString);
             this.devicesMaxCount = devicesMaxCount;
 
@@ -73,6 +77,16 @@ namespace CloudRoboticsDefTool
                 var dmi = new DeviceMasterInfo(sqlConnectionString, deviceEntity);
                 dmi.CreateDevice();
 
+                // Create Storage Queue (Option)
+                if (queueStorageConnString != string.Empty)
+                {
+                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(queueStorageConnString);
+                    CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+                    CloudQueue queue = queueClient.GetQueueReference(device.Id);
+                    // Create the queue if it doesn't already exist
+                    queue.CreateIfNotExists();
+                }
+
                 this.Close();
             }
             catch (Exception ex)
@@ -122,6 +136,11 @@ namespace CloudRoboticsDefTool
             comboBoxDevMDeviceType.Text = "";
             comboBoxDevMStatus.DataSource = CRoboticsConst.StatusList;
             comboBoxDevMStatus.Text = "";
+        }
+
+        private void CreateDeviceForm_Activated(object sender, EventArgs e)
+        {
+            deviceIDTextBox.Focus();
         }
     }
 }

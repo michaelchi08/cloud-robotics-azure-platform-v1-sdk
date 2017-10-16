@@ -47,5 +47,10 @@ namespace CloudRoboticsDefTool
 
             textBoxJsonMessage.Text = jsonMessages;
         }
+
+        private void EditMessageForm_Activated(object sender, EventArgs e)
+        {
+            textBoxJsonMessage.Focus();
+        }
     }
 }

@@ -148,5 +148,10 @@ namespace CloudRoboticsDefTool
             textBoxDevMRescGrpId.Text = deviceEntity.DevM_ResourceGroupId;
             textBoxDevMDesc.Text = deviceEntity.DevM_Description;
         }
+
+        private void DeviceUpdateForm_Activated(object sender, EventArgs e)
+        {
+            deviceIDComboBox.Focus();
+        }
     }
 }

@@ -50,12 +50,12 @@ namespace CloudRoboticsDefTool.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CloudRoboticsDeviceSimulator_FilePath {
+        public string Microsoft_QStorage_ConnectionString {
             get {
-                return ((string)(this["CloudRoboticsDeviceSimulator_FilePath"]));
+                return ((string)(this["Microsoft_QStorage_ConnectionString"]));
             }
             set {
-                this["CloudRoboticsDeviceSimulator_FilePath"] = value;
+                this["Microsoft_QStorage_ConnectionString"] = value;
             }
         }
         

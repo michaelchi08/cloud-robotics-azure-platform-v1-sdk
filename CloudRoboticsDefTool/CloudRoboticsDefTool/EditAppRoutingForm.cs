@@ -298,5 +298,10 @@ namespace CloudRoboticsDefTool
                 }
             }
         }
+
+        private void EditAppRoutingForm_Activated(object sender, EventArgs e)
+        {
+            textBoxAppId.Focus();
+        }
     }
 }

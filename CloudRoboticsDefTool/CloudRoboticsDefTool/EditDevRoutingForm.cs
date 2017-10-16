@@ -190,5 +190,10 @@ namespace CloudRoboticsDefTool
         {
             this.Close();
         }
+
+        private void EditDevRoutingForm_Activated(object sender, EventArgs e)
+        {
+            textBoxDeviceId.Focus();
+        }
     }
 }

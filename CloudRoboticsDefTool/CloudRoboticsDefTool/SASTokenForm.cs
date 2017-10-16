@@ -115,5 +115,15 @@ namespace CloudRoboticsDefTool
         {
             selectedDeviceKey = this.deviceKeyComboBox.SelectedItem.ToString();
         }
+
+        private void SASTokenForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SASTokenForm_Activated(object sender, EventArgs e)
+        {
+            deviceIDComboBox.Focus();
+        }
     }
 }

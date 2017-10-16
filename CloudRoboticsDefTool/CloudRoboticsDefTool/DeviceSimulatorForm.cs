@@ -4,7 +4,9 @@ using System.Text;
 using Microsoft.Azure.Devices.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using System.Threading;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace CloudRoboticsDefTool
 {
@@ -17,6 +19,9 @@ namespace CloudRoboticsDefTool
         private string deviceKey = string.Empty;
         private string deviceType = string.Empty;
         private string deviceMessageType = string.Empty;
+        private string queueStorageConnString = string.Empty;
+        private bool sendLoopChecked = false;
+        private bool receiveLoopChecked = false;
 
         public static string jsonMessages;
         private int sendCount = 0;
@@ -26,7 +31,8 @@ namespace CloudRoboticsDefTool
             InitializeComponent();
         }
 
-        public DeviceSimulatorForm(string p_iotHubConnectionString, string p_iotHubHostName, string p_deviceId, string p_deviceKey, string p_deviceType)
+        public DeviceSimulatorForm(string p_iotHubConnectionString, string p_iotHubHostName, 
+            string p_deviceId, string p_deviceKey, string p_deviceType, string p_QueueStorageConnString)
         {
             InitializeComponent();
 
@@ -35,6 +41,7 @@ namespace CloudRoboticsDefTool
             deviceId = p_deviceId;
             deviceKey = p_deviceKey;
             deviceType = p_deviceType;
+            queueStorageConnString = p_QueueStorageConnString;
         }
 
         private void DeviceSimulatorForm_Load(object sender, EventArgs e)
@@ -44,6 +51,7 @@ namespace CloudRoboticsDefTool
             comboBoxDeviceId.Text = deviceId;
             textBoxDeviceKey.Text = deviceKey;
             textBoxIotHubHostName.Text = iotHubHostName;
+            textBoxQueStorageConnString.Text = queueStorageConnString;
 
             if (deviceType.ToUpper() == "PEPPER")
             {
@@ -97,19 +105,52 @@ namespace CloudRoboticsDefTool
             }
 
             string msg = textBoxInput.Text;
-            // Set deviceId to RbHeader
-            JObject jo_message = JsonConvert.DeserializeObject<JObject>(msg);
-            jo_message["RbHeader"]["SourceDeviceId"] = comboBoxDeviceId.Text;
-            msg = JsonConvert.SerializeObject(jo_message);
 
-            SendDeviceToCloudMessagesAsync(msg);
+            if (checkBoxSendLoop.Checked)
+            {
+                sendLoopChecked = true;
+                SendDeviceToCloudMessagesLoopAsync(msg);
+            }
+            else
+            {
+                SendDeviceToCloudMessagesAsync(msg);
+            }
         }
 
         private async void SendDeviceToCloudMessagesAsync(string msg)
         {
+            // Set deviceId to RbHeader
+            JObject jo_message = JsonConvert.DeserializeObject<JObject>(msg);
+            jo_message["RbHeader"]["SourceDeviceId"] = comboBoxDeviceId.Text;
+            jo_message["RbHeader"]["MessageSeqno"] = "1";
+            jo_message["RbHeader"]["SendDateTime"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            msg = JsonConvert.SerializeObject(jo_message);
             var message = new Microsoft.Azure.Devices.Client.Message(Encoding.UTF8.GetBytes(msg));
 
             await deviceClient.SendEventAsync(message);
+        }
+
+        private async void SendDeviceToCloudMessagesLoopAsync(string msg)
+        {
+            int i = 0;
+            // Set deviceId to RbHeader
+            JObject jo_message = JsonConvert.DeserializeObject<JObject>(msg);
+
+            while (true)
+            {
+                if (!sendLoopChecked)
+                    break;
+
+                jo_message["RbHeader"]["SourceDeviceId"] = comboBoxDeviceId.Text;
+                ++i;
+                jo_message["RbHeader"]["MessageSeqno"] = i.ToString();
+                jo_message["RbHeader"]["SendDateTime"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                msg = JsonConvert.SerializeObject(jo_message);
+                var message = new Microsoft.Azure.Devices.Client.Message(Encoding.UTF8.GetBytes(msg));
+                // 
+                await deviceClient.SendEventAsync(message);
+                Thread.Sleep(200);
+            }
         }
 
         private void buttonReceive_Click(object sender, EventArgs e)
@@ -120,8 +161,14 @@ namespace CloudRoboticsDefTool
                 return;
             }
 
-            textBoxOutput.Text = string.Empty;
-            ReceiveC2dAsync();
+            if (queueStorageConnString == null || queueStorageConnString == string.Empty)
+            {
+                ReceiveC2dAsync();
+            }
+            else
+            {
+                ReceiveC2dFromQueueAsync();
+            }
         }
 
         private async void ReceiveC2dAsync()
@@ -133,8 +180,9 @@ namespace CloudRoboticsDefTool
                     Microsoft.Azure.Devices.Client.Message receivedMessage = await deviceClient.ReceiveAsync();
                     if (receivedMessage == null) continue;
 
-                    textBoxOutput.Text += string.Format("Received message: {0}", Encoding.UTF8.GetString(receivedMessage.GetBytes()));
+                    textBoxOutput.Text = string.Format("** Received from IoT Hub ** (Datetime:{0})", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
                     textBoxOutput.Text += Environment.NewLine;
+                    textBoxOutput.Text += Encoding.UTF8.GetString(receivedMessage.GetBytes());
 
                     await deviceClient.CompleteAsync(receivedMessage);
                 }
@@ -142,6 +190,34 @@ namespace CloudRoboticsDefTool
                 {
                     if (deviceClient != null)
                         throw ex;
+                }
+            }
+        }
+
+        private async void ReceiveC2dFromQueueAsync()
+        {
+            receiveLoopChecked = true;
+            // Retrieve storage account from connection string.
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(queueStorageConnString);
+            // Create the queue client.
+            CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+            // Retrieve a reference to a container.
+            CloudQueue queue = queueClient.GetQueueReference(deviceId);
+
+            while (receiveLoopChecked)
+            {
+                CloudQueueMessage queueMessage = await queue.GetMessageAsync();
+                if (queueMessage == null)
+                {
+                    Thread.Sleep(100);
+                }
+                else
+                {
+                    string receivedMessage = queueMessage.AsString;
+                    textBoxOutput.Text = string.Format("** Received from Queue Storage ** (Datetime:{0})", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+                    textBoxOutput.Text += Environment.NewLine;
+                    textBoxOutput.Text += receivedMessage;
+                    await queue.DeleteMessageAsync(queueMessage);
                 }
             }
         }
@@ -213,11 +289,28 @@ namespace CloudRoboticsDefTool
 
         private void DeviceSimulatorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            sendLoopChecked = false;
+            receiveLoopChecked = false;
+            Thread.Sleep(500);
+
             if (deviceClient != null)
             {
                 deviceClient.Dispose();
                 deviceClient = null;
             }
+        }
+
+        private void checkBoxSendLoop_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxSendLoop.Checked)
+            {
+                sendLoopChecked = true;
+            }
+            else
+            {
+                sendLoopChecked = false;
+            }
+
         }
     }
 }

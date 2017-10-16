@@ -330,5 +330,10 @@ namespace CloudRoboticsDefTool
             }
 
         }
+
+        private void EditDeviceGroupFrom_Activated(object sender, EventArgs e)
+        {
+            comboBoxDeviceGroupId.Focus();
+        }
     }
 }

@@ -40,7 +40,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(649, 696);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(238, 50);
-            this.buttonCancel.TabIndex = 5;
+            this.buttonCancel.TabIndex = 2;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
@@ -52,7 +52,7 @@
             this.buttonSave.Location = new System.Drawing.Point(338, 696);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(238, 50);
-            this.buttonSave.TabIndex = 4;
+            this.buttonSave.TabIndex = 1;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
@@ -67,7 +67,7 @@
             this.textBoxJsonMessage.Name = "textBoxJsonMessage";
             this.textBoxJsonMessage.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxJsonMessage.Size = new System.Drawing.Size(1216, 615);
-            this.textBoxJsonMessage.TabIndex = 3;
+            this.textBoxJsonMessage.TabIndex = 0;
             // 
             // EditMessageForm
             // 
@@ -79,6 +79,7 @@
             this.Controls.Add(this.textBoxJsonMessage);
             this.Name = "EditMessageForm";
             this.Text = "JSON Message Edit Form";
+            this.Activated += new System.EventHandler(this.EditMessageForm_Activated);
             this.Load += new System.EventHandler(this.EditMessageForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

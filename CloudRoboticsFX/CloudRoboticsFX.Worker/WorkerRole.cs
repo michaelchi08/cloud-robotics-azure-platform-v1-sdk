@@ -23,6 +23,7 @@ namespace CloudRoboticsFX.Worker
         private string iotHubClassicConnString = string.Empty;
         private string iotHubName = string.Empty;
         private string iotHubConsumerGroupName = string.Empty;
+        private string storageQueueSendEnabled = string.Empty;
         private string storageAccountName = string.Empty;
         private string storageAccountKey = string.Empty;
         private string storageConnectionString = string.Empty;
@@ -57,6 +58,7 @@ namespace CloudRoboticsFX.Worker
             storageAccountKey = CloudConfigurationManager.GetSetting("IoTHub.StorageAccountKey");
             storageConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}",
                         storageAccountName, storageAccountKey);
+            storageQueueSendEnabled = CloudConfigurationManager.GetSetting("StorageQueue.SendEnabled");
 
             c2dLogEnabled = CloudConfigurationManager.GetSetting("RbC2dLog.Enable");
 
@@ -82,6 +84,15 @@ namespace CloudRoboticsFX.Worker
             RoboticsEventProcessor.rbTraceTableName = traceTableName;
             RoboticsEventProcessor.rbTraceLevel = traceLevel;
             RoboticsEventProcessor.rbIotHubConnString = iotHubConnectionString;
+            if (storageQueueSendEnabled != null && storageQueueSendEnabled.ToLower() == "true")
+            {
+                RoboticsEventProcessor.rbStorageQueueSendEnabled = true;
+                RoboticsEventProcessor.rbStorageQueueConnString = storageConnectionString;
+            }
+            else
+            {
+                RoboticsEventProcessor.rbStorageQueueSendEnabled = false;
+            }
             RoboticsEventProcessor.rbSqlConnectionString = CloudConfigurationManager.GetSetting("SqlConnectionString");
             RoboticsEventProcessor.rbEncPassPhrase = CloudConfigurationManager.GetSetting("RbEnc.PassPhrase");
             RoboticsEventProcessor.rbCacheExpiredTimeSec = int.Parse(CloudConfigurationManager.GetSetting("RbCache.ExpiredTimeSec"));

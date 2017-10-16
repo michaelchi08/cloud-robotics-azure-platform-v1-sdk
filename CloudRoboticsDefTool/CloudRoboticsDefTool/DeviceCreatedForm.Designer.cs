@@ -43,6 +43,7 @@
             this.richTextBox.ReadOnly = true;
             this.richTextBox.Size = new System.Drawing.Size(860, 179);
             this.richTextBox.TabIndex = 3;
+            this.richTextBox.TabStop = false;
             this.richTextBox.Text = "";
             // 
             // doneButton
@@ -70,6 +71,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "DeviceCreatedForm";
             this.Text = "DeviceCreatedForm";
+            this.Activated += new System.EventHandler(this.DeviceCreatedForm_Activated);
             this.Load += new System.EventHandler(this.DeviceCreatedForm_Load);
             this.ResumeLayout(false);
 

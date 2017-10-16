@@ -29,19 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabConnection = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.searchButton = new System.Windows.Forms.Button();
-            this.buttonUpdateFilePath = new System.Windows.Forms.Button();
+            this.buttonUpdateQStorageConnString = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBoxFilePath = new System.Windows.Forms.TextBox();
+            this.textBoxQStorageConnString = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonUpdateSqlConn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -232,41 +231,27 @@
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel3.Controls.Add(this.searchButton);
-            this.panel3.Controls.Add(this.buttonUpdateFilePath);
+            this.panel3.Controls.Add(this.buttonUpdateQStorageConnString);
             this.panel3.Controls.Add(this.label7);
-            this.panel3.Controls.Add(this.textBoxFilePath);
+            this.panel3.Controls.Add(this.textBoxQStorageConnString);
             this.panel3.Location = new System.Drawing.Point(12, 900);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1776, 171);
             this.panel3.TabIndex = 6;
             // 
-            // searchButton
+            // buttonUpdateQStorageConnString
             // 
-            this.searchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.searchButton.Font = new System.Drawing.Font("Meiryo UI", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.searchButton.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.searchButton.Location = new System.Drawing.Point(1634, 51);
-            this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(113, 44);
-            this.searchButton.TabIndex = 36;
-            this.searchButton.Text = "search";
-            this.searchButton.UseVisualStyleBackColor = true;
-            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
-            // 
-            // buttonUpdateFilePath
-            // 
-            this.buttonUpdateFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonUpdateFilePath.BackColor = System.Drawing.Color.SteelBlue;
-            this.buttonUpdateFilePath.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.buttonUpdateFilePath.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.buttonUpdateFilePath.Location = new System.Drawing.Point(1550, 110);
-            this.buttonUpdateFilePath.Name = "buttonUpdateFilePath";
-            this.buttonUpdateFilePath.Size = new System.Drawing.Size(198, 56);
-            this.buttonUpdateFilePath.TabIndex = 15;
-            this.buttonUpdateFilePath.Text = "Update";
-            this.buttonUpdateFilePath.UseVisualStyleBackColor = false;
-            this.buttonUpdateFilePath.Click += new System.EventHandler(this.buttonUpdateFilePath_Click);
+            this.buttonUpdateQStorageConnString.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonUpdateQStorageConnString.BackColor = System.Drawing.Color.SteelBlue;
+            this.buttonUpdateQStorageConnString.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.buttonUpdateQStorageConnString.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.buttonUpdateQStorageConnString.Location = new System.Drawing.Point(1550, 110);
+            this.buttonUpdateQStorageConnString.Name = "buttonUpdateQStorageConnString";
+            this.buttonUpdateQStorageConnString.Size = new System.Drawing.Size(198, 56);
+            this.buttonUpdateQStorageConnString.TabIndex = 8;
+            this.buttonUpdateQStorageConnString.Text = "Update";
+            this.buttonUpdateQStorageConnString.UseVisualStyleBackColor = false;
+            this.buttonUpdateQStorageConnString.Click += new System.EventHandler(this.buttonUpdateQStorageConnString_Click);
             // 
             // label7
             // 
@@ -277,20 +262,21 @@
             this.label7.ForeColor = System.Drawing.SystemColors.Highlight;
             this.label7.Location = new System.Drawing.Point(20, 12);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(320, 30);
+            this.label7.Size = new System.Drawing.Size(1118, 30);
             this.label7.TabIndex = 7;
-            this.label7.Text = "Device Simulator Exe Path";
+            this.label7.Text = "Queue Storage Connection Stirng (**Receive message from queue storage if this val" +
+    "ue is set)";
             // 
-            // textBoxFilePath
+            // textBoxQStorageConnString
             // 
-            this.textBoxFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBoxQStorageConnString.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxFilePath.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.textBoxFilePath.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.textBoxFilePath.Location = new System.Drawing.Point(19, 54);
-            this.textBoxFilePath.Name = "textBoxFilePath";
-            this.textBoxFilePath.Size = new System.Drawing.Size(1609, 38);
-            this.textBoxFilePath.TabIndex = 6;
+            this.textBoxQStorageConnString.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.textBoxQStorageConnString.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.textBoxQStorageConnString.Location = new System.Drawing.Point(19, 54);
+            this.textBoxQStorageConnString.Name = "textBoxQStorageConnString";
+            this.textBoxQStorageConnString.Size = new System.Drawing.Size(1728, 38);
+            this.textBoxQStorageConnString.TabIndex = 6;
             // 
             // panel2
             // 
@@ -313,7 +299,7 @@
             this.buttonUpdateSqlConn.Location = new System.Drawing.Point(1550, 215);
             this.buttonUpdateSqlConn.Name = "buttonUpdateSqlConn";
             this.buttonUpdateSqlConn.Size = new System.Drawing.Size(198, 56);
-            this.buttonUpdateSqlConn.TabIndex = 15;
+            this.buttonUpdateSqlConn.TabIndex = 5;
             this.buttonUpdateSqlConn.Text = "Update";
             this.buttonUpdateSqlConn.UseVisualStyleBackColor = false;
             this.buttonUpdateSqlConn.Click += new System.EventHandler(this.buttonUpdateSqlConn_Click);
@@ -341,7 +327,7 @@
             this.textBoxSQLConnectionString.Multiline = true;
             this.textBoxSQLConnectionString.Name = "textBoxSQLConnectionString";
             this.textBoxSQLConnectionString.Size = new System.Drawing.Size(1730, 144);
-            this.textBoxSQLConnectionString.TabIndex = 6;
+            this.textBoxSQLConnectionString.TabIndex = 4;
             // 
             // panel1
             // 
@@ -374,7 +360,7 @@
             this.buttonGenerateSAS.Location = new System.Drawing.Point(1491, 421);
             this.buttonGenerateSAS.Name = "buttonGenerateSAS";
             this.buttonGenerateSAS.Size = new System.Drawing.Size(257, 56);
-            this.buttonGenerateSAS.TabIndex = 15;
+            this.buttonGenerateSAS.TabIndex = 3;
             this.buttonGenerateSAS.Text = "Generate SAS";
             this.buttonGenerateSAS.UseVisualStyleBackColor = false;
             this.buttonGenerateSAS.Click += new System.EventHandler(this.buttonGenerateSAS_Click);
@@ -390,6 +376,7 @@
             this.textBoxSASValue.Name = "textBoxSASValue";
             this.textBoxSASValue.Size = new System.Drawing.Size(1730, 102);
             this.textBoxSASValue.TabIndex = 5;
+            this.textBoxSASValue.TabStop = false;
             // 
             // ButtonUpdateIoTConn
             // 
@@ -400,7 +387,7 @@
             this.ButtonUpdateIoTConn.Location = new System.Drawing.Point(1557, 218);
             this.ButtonUpdateIoTConn.Name = "ButtonUpdateIoTConn";
             this.ButtonUpdateIoTConn.Size = new System.Drawing.Size(191, 56);
-            this.ButtonUpdateIoTConn.TabIndex = 14;
+            this.ButtonUpdateIoTConn.TabIndex = 1;
             this.ButtonUpdateIoTConn.Text = "Update";
             this.ButtonUpdateIoTConn.UseVisualStyleBackColor = false;
             this.ButtonUpdateIoTConn.Click += new System.EventHandler(this.ButtonUpdateIoTConn_Click);
@@ -420,7 +407,7 @@
             0});
             this.numericUpDownTTL.Name = "numericUpDownTTL";
             this.numericUpDownTTL.Size = new System.Drawing.Size(206, 38);
-            this.numericUpDownTTL.TabIndex = 13;
+            this.numericUpDownTTL.TabIndex = 2;
             this.numericUpDownTTL.Value = new decimal(new int[] {
             365,
             0,
@@ -449,6 +436,7 @@
             this.textBoxSAKey.ReadOnly = true;
             this.textBoxSAKey.Size = new System.Drawing.Size(1055, 38);
             this.textBoxSAKey.TabIndex = 11;
+            this.textBoxSAKey.TabStop = false;
             // 
             // label4
             // 
@@ -472,6 +460,7 @@
             this.textBoxSAPolicyName.ReadOnly = true;
             this.textBoxSAPolicyName.Size = new System.Drawing.Size(1055, 38);
             this.textBoxSAPolicyName.TabIndex = 9;
+            this.textBoxSAPolicyName.TabStop = false;
             // 
             // textBoxEndPoint
             // 
@@ -482,6 +471,7 @@
             this.textBoxEndPoint.ReadOnly = true;
             this.textBoxEndPoint.Size = new System.Drawing.Size(1055, 38);
             this.textBoxEndPoint.TabIndex = 7;
+            this.textBoxEndPoint.TabStop = false;
             // 
             // label3
             // 
@@ -532,7 +522,7 @@
             this.textBoxIoTHubConnString.Multiline = true;
             this.textBoxIoTHubConnString.Name = "textBoxIoTHubConnString";
             this.textBoxIoTHubConnString.Size = new System.Drawing.Size(1730, 158);
-            this.textBoxIoTHubConnString.TabIndex = 4;
+            this.textBoxIoTHubConnString.TabIndex = 0;
             // 
             // tabDeviceMaster
             // 
@@ -598,8 +588,8 @@
             this.devicesGridView.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.devicesGridView.MultiSelect = false;
             this.devicesGridView.Name = "devicesGridView";
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            this.devicesGridView.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
+            this.devicesGridView.RowsDefaultCellStyle = dataGridViewCellStyle7;
             this.devicesGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.devicesGridView.Size = new System.Drawing.Size(1745, 788);
             this.devicesGridView.TabIndex = 13;
@@ -831,8 +821,8 @@
             this.deviceGroupsGridView.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.deviceGroupsGridView.MultiSelect = false;
             this.deviceGroupsGridView.Name = "deviceGroupsGridView";
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            this.deviceGroupsGridView.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            this.deviceGroupsGridView.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.deviceGroupsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.deviceGroupsGridView.Size = new System.Drawing.Size(1745, 749);
             this.deviceGroupsGridView.TabIndex = 13;
@@ -1010,8 +1000,8 @@
             this.devRoutingsGridView.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.devRoutingsGridView.MultiSelect = false;
             this.devRoutingsGridView.Name = "devRoutingsGridView";
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            this.devRoutingsGridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            this.devRoutingsGridView.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.devRoutingsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.devRoutingsGridView.Size = new System.Drawing.Size(1745, 749);
             this.devRoutingsGridView.TabIndex = 13;
@@ -1224,8 +1214,8 @@
             this.appMastersGridView.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.appMastersGridView.MultiSelect = false;
             this.appMastersGridView.Name = "appMastersGridView";
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            this.appMastersGridView.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            this.appMastersGridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.appMastersGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.appMastersGridView.Size = new System.Drawing.Size(1745, 697);
             this.appMastersGridView.TabIndex = 13;
@@ -1403,8 +1393,8 @@
             this.appRoutingsGridView.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.appRoutingsGridView.MultiSelect = false;
             this.appRoutingsGridView.Name = "appRoutingsGridView";
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
-            this.appRoutingsGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            this.appRoutingsGridView.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.appRoutingsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.appRoutingsGridView.Size = new System.Drawing.Size(1745, 757);
             this.appRoutingsGridView.TabIndex = 13;
@@ -1659,8 +1649,8 @@
             this.fxTraceLogGridView.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.fxTraceLogGridView.MultiSelect = false;
             this.fxTraceLogGridView.Name = "fxTraceLogGridView";
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
-            this.fxTraceLogGridView.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            this.fxTraceLogGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.fxTraceLogGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.fxTraceLogGridView.Size = new System.Drawing.Size(1745, 804);
             this.fxTraceLogGridView.TabIndex = 13;
@@ -1695,7 +1685,8 @@
             this.ClientSize = new System.Drawing.Size(1807, 1130);
             this.Controls.Add(this.tabControl1);
             this.Name = "FrmMainWindow";
-            this.Text = "Cloud Robotics Definition & Management Tool";
+            this.Text = "Cloud Robotics Definition & Management Tool - v1.5";
+            this.Activated += new System.EventHandler(this.FrmMainWindow_Activated);
             this.Load += new System.EventHandler(this.FrmMainWindow_Load);
             this.Shown += new System.EventHandler(this.FrmMainWindow_Shown);
             this.tabControl1.ResumeLayout(false);
@@ -1791,9 +1782,9 @@
         private System.Windows.Forms.ToolStripMenuItem LaunchSimulatorMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button buttonUpdateFilePath;
+        private System.Windows.Forms.Button buttonUpdateQStorageConnString;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBoxFilePath;
+        private System.Windows.Forms.TextBox textBoxQStorageConnString;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox textBoxDeviceGroupId;
         private System.Windows.Forms.Button listDeviceGrpButton;
@@ -1853,7 +1844,6 @@
         private System.Windows.Forms.ContextMenuStrip appRoutingsGridViewContextMenu;
         private System.Windows.Forms.ToolStripMenuItem copyAllToolStripOnAppRouting;
         private System.Windows.Forms.ToolStripMenuItem copySelectedToolStripOnAppRouting;
-        private System.Windows.Forms.Button searchButton;
         private System.Windows.Forms.TabPage tabFxTraceLog;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.Label label15;

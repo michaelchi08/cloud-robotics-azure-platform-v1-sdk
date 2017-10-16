@@ -55,10 +55,10 @@
             this.updateButton.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.updateButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.updateButton.Location = new System.Drawing.Point(589, 802);
-            this.updateButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.updateButton.Margin = new System.Windows.Forms.Padding(4);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(154, 50);
-            this.updateButton.TabIndex = 46;
+            this.updateButton.TabIndex = 9;
             this.updateButton.Text = "Update";
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
@@ -69,10 +69,10 @@
             this.cancelButton.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.cancelButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.cancelButton.Location = new System.Drawing.Point(791, 802);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(4);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(154, 50);
-            this.cancelButton.TabIndex = 45;
+            this.cancelButton.TabIndex = 10;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
@@ -83,10 +83,10 @@
             this.createButton.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.createButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.createButton.Location = new System.Drawing.Point(386, 802);
-            this.createButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.createButton.Margin = new System.Windows.Forms.Padding(4);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(154, 50);
-            this.createButton.TabIndex = 44;
+            this.createButton.TabIndex = 8;
             this.createButton.Text = "Create";
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
@@ -130,7 +130,7 @@
             this.textBoxStorageKey.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxStorageKey.Name = "textBoxStorageKey";
             this.textBoxStorageKey.Size = new System.Drawing.Size(931, 38);
-            this.textBoxStorageKey.TabIndex = 39;
+            this.textBoxStorageKey.TabIndex = 2;
             // 
             // label4
             // 
@@ -153,7 +153,7 @@
             this.textBoxStorageAccount.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxStorageAccount.Name = "textBoxStorageAccount";
             this.textBoxStorageAccount.Size = new System.Drawing.Size(931, 38);
-            this.textBoxStorageAccount.TabIndex = 37;
+            this.textBoxStorageAccount.TabIndex = 1;
             // 
             // label3
             // 
@@ -176,7 +176,7 @@
             this.textBoxAppId.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxAppId.Name = "textBoxAppId";
             this.textBoxAppId.Size = new System.Drawing.Size(931, 38);
-            this.textBoxAppId.TabIndex = 32;
+            this.textBoxAppId.TabIndex = 0;
             // 
             // label2
             // 
@@ -202,7 +202,7 @@
             this.textBoxAppInfoDevice.Name = "textBoxAppInfoDevice";
             this.textBoxAppInfoDevice.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxAppInfoDevice.Size = new System.Drawing.Size(931, 205);
-            this.textBoxAppInfoDevice.TabIndex = 35;
+            this.textBoxAppInfoDevice.TabIndex = 7;
             // 
             // label7
             // 
@@ -225,7 +225,7 @@
             this.comboBoxStatus.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.comboBoxStatus.Name = "comboBoxStatus";
             this.comboBoxStatus.Size = new System.Drawing.Size(931, 38);
-            this.comboBoxStatus.TabIndex = 32;
+            this.comboBoxStatus.TabIndex = 3;
             // 
             // label1
             // 
@@ -275,7 +275,7 @@
             this.textBoxDesc.Multiline = true;
             this.textBoxDesc.Name = "textBoxDesc";
             this.textBoxDesc.Size = new System.Drawing.Size(931, 88);
-            this.textBoxDesc.TabIndex = 28;
+            this.textBoxDesc.TabIndex = 4;
             // 
             // textBoxAppInfo
             // 
@@ -289,7 +289,7 @@
             this.textBoxAppInfo.Name = "textBoxAppInfo";
             this.textBoxAppInfo.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxAppInfo.Size = new System.Drawing.Size(931, 181);
-            this.textBoxAppInfo.TabIndex = 26;
+            this.textBoxAppInfo.TabIndex = 5;
             // 
             // EditAppMasterForm
             // 
@@ -303,6 +303,7 @@
             this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Name = "EditAppMasterForm";
             this.Text = "EditAppMasterForm";
+            this.Activated += new System.EventHandler(this.EditAppMasterForm_Activated);
             this.Load += new System.EventHandler(this.EditAppMasterForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

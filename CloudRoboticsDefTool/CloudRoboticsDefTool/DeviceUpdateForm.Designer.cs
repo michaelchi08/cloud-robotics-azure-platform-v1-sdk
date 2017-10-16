@@ -32,12 +32,12 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.deviceIDLabel = new System.Windows.Forms.Label();
             this.deviceIDComboBox = new System.Windows.Forms.ComboBox();
             this.secondaryKeyTextBox = new System.Windows.Forms.TextBox();
             this.primaryKeyTextBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.deviceIDLabel = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.comboBoxDevMDeviceType = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -58,7 +58,7 @@
             this.restoreButton.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.restoreButton.Name = "restoreButton";
             this.restoreButton.Size = new System.Drawing.Size(159, 48);
-            this.restoreButton.TabIndex = 19;
+            this.restoreButton.TabIndex = 8;
             this.restoreButton.Text = "Restore";
             this.restoreButton.UseVisualStyleBackColor = true;
             this.restoreButton.Click += new System.EventHandler(this.restoreButton_Click);
@@ -67,10 +67,10 @@
             // 
             this.cancelButton.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.cancelButton.Location = new System.Drawing.Point(630, 535);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(4);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(159, 48);
-            this.cancelButton.TabIndex = 17;
+            this.cancelButton.TabIndex = 9;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
@@ -79,10 +79,10 @@
             // 
             this.updateButton.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.updateButton.Location = new System.Drawing.Point(77, 535);
-            this.updateButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.updateButton.Margin = new System.Windows.Forms.Padding(4);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(159, 48);
-            this.updateButton.TabIndex = 16;
+            this.updateButton.TabIndex = 7;
             this.updateButton.Text = "Update";
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
@@ -105,6 +105,42 @@
             this.groupBox1.TabIndex = 23;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "IoT Hub Device";
+            // 
+            // deviceIDComboBox
+            // 
+            this.deviceIDComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.deviceIDComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.deviceIDComboBox.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.deviceIDComboBox.FormattingEnabled = true;
+            this.deviceIDComboBox.Location = new System.Drawing.Point(277, 45);
+            this.deviceIDComboBox.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.deviceIDComboBox.Name = "deviceIDComboBox";
+            this.deviceIDComboBox.Size = new System.Drawing.Size(567, 38);
+            this.deviceIDComboBox.TabIndex = 0;
+            this.deviceIDComboBox.DropDownClosed += new System.EventHandler(this.deviceIDComboBox_DropDownClosed);
+            // 
+            // secondaryKeyTextBox
+            // 
+            this.secondaryKeyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.secondaryKeyTextBox.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.secondaryKeyTextBox.Location = new System.Drawing.Point(277, 139);
+            this.secondaryKeyTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.secondaryKeyTextBox.Name = "secondaryKeyTextBox";
+            this.secondaryKeyTextBox.Size = new System.Drawing.Size(567, 38);
+            this.secondaryKeyTextBox.TabIndex = 2;
+            // 
+            // primaryKeyTextBox
+            // 
+            this.primaryKeyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.primaryKeyTextBox.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.primaryKeyTextBox.Location = new System.Drawing.Point(277, 93);
+            this.primaryKeyTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.primaryKeyTextBox.Name = "primaryKeyTextBox";
+            this.primaryKeyTextBox.Size = new System.Drawing.Size(567, 38);
+            this.primaryKeyTextBox.TabIndex = 1;
             // 
             // label4
             // 
@@ -142,42 +178,6 @@
             this.deviceIDLabel.TabIndex = 14;
             this.deviceIDLabel.Text = "Device ID:";
             // 
-            // deviceIDComboBox
-            // 
-            this.deviceIDComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.deviceIDComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.deviceIDComboBox.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.deviceIDComboBox.FormattingEnabled = true;
-            this.deviceIDComboBox.Location = new System.Drawing.Point(277, 45);
-            this.deviceIDComboBox.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.deviceIDComboBox.Name = "deviceIDComboBox";
-            this.deviceIDComboBox.Size = new System.Drawing.Size(567, 38);
-            this.deviceIDComboBox.TabIndex = 21;
-            this.deviceIDComboBox.DropDownClosed += new System.EventHandler(this.deviceIDComboBox_DropDownClosed);
-            // 
-            // secondaryKeyTextBox
-            // 
-            this.secondaryKeyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.secondaryKeyTextBox.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.secondaryKeyTextBox.Location = new System.Drawing.Point(277, 139);
-            this.secondaryKeyTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.secondaryKeyTextBox.Name = "secondaryKeyTextBox";
-            this.secondaryKeyTextBox.Size = new System.Drawing.Size(567, 38);
-            this.secondaryKeyTextBox.TabIndex = 20;
-            // 
-            // primaryKeyTextBox
-            // 
-            this.primaryKeyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.primaryKeyTextBox.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.primaryKeyTextBox.Location = new System.Drawing.Point(277, 93);
-            this.primaryKeyTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.primaryKeyTextBox.Name = "primaryKeyTextBox";
-            this.primaryKeyTextBox.Size = new System.Drawing.Size(567, 38);
-            this.primaryKeyTextBox.TabIndex = 19;
-            // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -204,10 +204,11 @@
             this.comboBoxDevMDeviceType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxDevMDeviceType.FormattingEnabled = true;
+            this.comboBoxDevMDeviceType.ItemHeight = 30;
             this.comboBoxDevMDeviceType.Location = new System.Drawing.Point(277, 43);
             this.comboBoxDevMDeviceType.Name = "comboBoxDevMDeviceType";
             this.comboBoxDevMDeviceType.Size = new System.Drawing.Size(567, 38);
-            this.comboBoxDevMDeviceType.TabIndex = 34;
+            this.comboBoxDevMDeviceType.TabIndex = 3;
             // 
             // label7
             // 
@@ -226,10 +227,11 @@
             this.comboBoxDevMStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxDevMStatus.FormattingEnabled = true;
+            this.comboBoxDevMStatus.ItemHeight = 30;
             this.comboBoxDevMStatus.Location = new System.Drawing.Point(277, 87);
             this.comboBoxDevMStatus.Name = "comboBoxDevMStatus";
             this.comboBoxDevMStatus.Size = new System.Drawing.Size(567, 38);
-            this.comboBoxDevMStatus.TabIndex = 32;
+            this.comboBoxDevMStatus.TabIndex = 4;
             // 
             // label1
             // 
@@ -277,7 +279,7 @@
             this.textBoxDevMDesc.Multiline = true;
             this.textBoxDevMDesc.Name = "textBoxDevMDesc";
             this.textBoxDevMDesc.Size = new System.Drawing.Size(567, 89);
-            this.textBoxDevMDesc.TabIndex = 28;
+            this.textBoxDevMDesc.TabIndex = 6;
             // 
             // textBoxDevMRescGrpId
             // 
@@ -288,7 +290,7 @@
             this.textBoxDevMRescGrpId.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.textBoxDevMRescGrpId.Name = "textBoxDevMRescGrpId";
             this.textBoxDevMRescGrpId.Size = new System.Drawing.Size(567, 38);
-            this.textBoxDevMRescGrpId.TabIndex = 26;
+            this.textBoxDevMRescGrpId.TabIndex = 5;
             // 
             // DeviceUpdateForm
             // 
@@ -303,6 +305,7 @@
             this.Font = new System.Drawing.Font("MS UI Gothic", 9F);
             this.Name = "DeviceUpdateForm";
             this.Text = "DeviceUpdateForm";
+            this.Activated += new System.EventHandler(this.DeviceUpdateForm_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DeviceUpdateForm_FormClosing);
             this.Load += new System.EventHandler(this.DeviceUpdateForm_Load);
             this.groupBox1.ResumeLayout(false);

@@ -19,7 +19,7 @@ namespace CloudRoboticsDefTool
         private static string activeIoTHubConnectionString;
         private string iotHubHostName;
         private static string activeSqlConnectionString;
-        private static string activeFilePath;
+        private static string activeQStorageConnString;
         private static string activeEncPassPhrase;
 
         public FrmMainWindow()
@@ -46,11 +46,11 @@ namespace CloudRoboticsDefTool
             try
             {
                 Properties.Settings.Default.Reload();
-                textBoxFilePath.Text = (string)Properties.Settings.Default["CloudRoboticsDeviceSimulator_FilePath"];
+                textBoxQStorageConnString.Text = (string)Properties.Settings.Default["Microsoft_QStorage_ConnectionString"];
             }
             catch
             {
-                textBoxFilePath.Text = string.Empty;
+                textBoxQStorageConnString.Text = string.Empty;
             }
 
             numericUpDownTTL.Value = MAX_TTL_VALUE;
@@ -64,7 +64,7 @@ namespace CloudRoboticsDefTool
                 //Setting the second optional parameter to false will prevent the parsing functions from processing empty strings
                 parseIoTHubConnectionString(textBoxIoTHubConnString.Text, true);
                 activeSqlConnectionString = textBoxSQLConnectionString.Text;
-                activeFilePath = textBoxFilePath.Text;
+                activeQStorageConnString = textBoxQStorageConnString.Text;
             }
             catch (Exception ex)
             {
@@ -276,17 +276,22 @@ namespace CloudRoboticsDefTool
             }
         }
 
-        private void buttonUpdateFilePath_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonUpdateQStorageConnString_Click(object sender, EventArgs e)
         {
             try
             {
                 // Device Simulator Exe File Path
                 // Save the setting
-                Properties.Settings.Default["CloudRoboticsDeviceSimulator_FilePath"] = textBoxFilePath.Text;
+                Properties.Settings.Default["Microsoft_QStorage_ConnectionString"] = textBoxQStorageConnString.Text;
                 Properties.Settings.Default.Save();
 
-                activeFilePath = textBoxFilePath.Text;
-                MessageBox.Show("Device Simulator Exe Path saved successfully!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                activeQStorageConnString = textBoxQStorageConnString.Text;
+                MessageBox.Show("Queue Storage Connection String saved successfully!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -295,17 +300,6 @@ namespace CloudRoboticsDefTool
 
         }
 
-        private void searchButton_Click(object sender, EventArgs e)
-        {
-            var dialog = new OpenFileDialog();
-            dialog.FileName = string.Empty;
-            dialog.Filter = "DLLファイル(*.exe)|*.exe|すべてのファイル(*.*)|*.*";
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                textBoxFilePath.Text = dialog.FileName;
-            }
-
-        }
 
         #endregion Connection Tab
 
@@ -317,7 +311,7 @@ namespace CloudRoboticsDefTool
         {
             try
             {
-                CreateDeviceForm createForm = new CreateDeviceForm(activeIoTHubConnectionString, activeSqlConnectionString, MAX_COUNT_OF_DEVICES);
+                CreateDeviceForm createForm = new CreateDeviceForm(activeIoTHubConnectionString, activeSqlConnectionString, activeQStorageConnString, MAX_COUNT_OF_DEVICES);
                 createForm.ShowDialog();    // Modal window
                 UpdateListOfDevices();
             }
@@ -442,19 +436,10 @@ namespace CloudRoboticsDefTool
             string selectedDeviceKey = devicesGridView.CurrentRow.Cells[1].Value.ToString();
             string selectedDeviceType = devicesGridView.CurrentRow.Cells[11].Value.ToString();
 
-            if (activeFilePath == null || activeFilePath == string.Empty)
-            {
-                DeviceSimulatorForm deviceSimulatorForm =
-                    new DeviceSimulatorForm(activeIoTHubConnectionString, iotHubHostName, selectedDeviceId, selectedDeviceKey, selectedDeviceType);
-                deviceSimulatorForm.Show();
-            }
-            else
-            {
-                System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
-                psi.FileName = activeFilePath;
-                psi.Arguments = $"\"{activeIoTHubConnectionString}\" \"{iotHubHostName}\" \"{selectedDeviceId}\" \"{selectedDeviceKey}\" \"{selectedDeviceType}\"";
-                System.Diagnostics.Process p = System.Diagnostics.Process.Start(psi);
-            }
+            DeviceSimulatorForm deviceSimulatorForm =
+                new DeviceSimulatorForm(activeIoTHubConnectionString, iotHubHostName,
+                        selectedDeviceId, selectedDeviceKey, selectedDeviceType, activeQStorageConnString);
+            deviceSimulatorForm.Show();
         }
 
         private void copyAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1377,5 +1362,9 @@ namespace CloudRoboticsDefTool
 
         #endregion Cloud Robotics FX Trace Log Tab
 
+        private void FrmMainWindow_Activated(object sender, EventArgs e)
+        {
+            textBoxIoTHubConnString.Focus();
+        }
     }
 }
